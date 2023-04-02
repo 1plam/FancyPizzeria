@@ -18,12 +18,10 @@ def validate_login(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         data = request.get_json()
-        if data is None:
-            return jsonify({'error': 'Validation error: Invalid request data'}), 400
+        validation_error, status_code = AuthValidator.validate_login(data)
 
-        validation_error, _ = AuthValidator.validate_login(data)
         if validation_error:
-            return jsonify(validation_error), 400
+            return jsonify(validation_error), status_code
 
         return func(*args, **kwargs)
 

@@ -1,10 +1,12 @@
 import re
 from datetime import datetime
+
+import uuid
 from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
 from functools import wraps
 
-from flask import jsonify
+from flask import jsonify, request
 
 
 class CustomerValidator:
@@ -24,10 +26,12 @@ class CustomerValidator:
 
         return {'error': 'Validation error: Invalid HTTP request method'}, 400
 
-    def validate_create_customer(self):
-        username = self.data.get('username')
-        password = self.data.get('password')
-        date_of_birth = self.data.get('date_of_birth')
+    @staticmethod
+    def validate_create_customer():
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        date_of_birth = data.get('date_of_birth')
 
         if not all([username, password, date_of_birth]):
             return {'error': 'Validation error: Missing required fields'}, 400
@@ -36,7 +40,8 @@ class CustomerValidator:
             return {'error': 'Validation error: Username must be between 4 and 12 characters'}, 400
 
         if not re.match(r'^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#%]*[!#%])[A-Za-z0-9!#%]{6,32}$', password):
-            return {'error': 'Validation error: Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!, #, or %) and be between 6 and 32 characters'}, 400
+            return {
+                'error': 'Validation error: Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!, #, or %) and be between 6 and 32 characters'}, 400
 
         if not date_of_birth:
             return {'error': 'Validation error: Date of birth is required'}, 400
@@ -51,10 +56,12 @@ class CustomerValidator:
 
         return None, None
 
-    def validate_update_customer(self):
-        username = self.data.get('username')
-        password = self.data.get('password')
-        date_of_birth = self.data.get('date_of_birth')
+    @staticmethod
+    def validate_update_customer():
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        date_of_birth = data.get('date_of_birth')
 
         if username is not None:
             if len(username) == 0:
@@ -63,8 +70,10 @@ class CustomerValidator:
                 return {'error': 'Validation error: Username must be between 4 and 12 characters'}, 400
 
         if password is not None:
-            if not re.match(r'^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#%]*[!#%])[A-Za-z0-9!#%]{6,32}$', password):
-                return {'error': 'Validation error: Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!, #, or %) and be between 6 and 32 characters'}, 400
+            if not re.match(r'^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#%]*[!#%])[A-Za-z0-9!#%]{6,32}$',
+                            password):
+                return {
+                    'error': 'Validation error: Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!, #, or %) and be between 6 and 32 characters'}, 400
 
         try:
             dob = parse(date_of_birth)
@@ -76,50 +85,28 @@ class CustomerValidator:
 
         return None, None
 
-    def validate_delete_customer(self):
-        customer_id = self.data.get('customer_id')
+    @staticmethod # ???
+    def validate_delete_customer():
+        customer_id = request.view_args['customer_id']
 
-        if not customer_id.isdigit():
+        try:
+            uuid.UUID(customer_id)
+        except ValueError:
             return {'error': 'Validation error: Invalid customer ID'}, 400
 
         return None, None
 
 
-def validate_create_customer(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        data = kwargs.get('data')
-        validation_error, _ = CustomerValidator(data, 'POST').validate()
-        if validation_error:
-            return jsonify(validation_error), 400
+def validate_customer_data(http_verb):
+    def decorator_validate_customer_data(func):
+        @wraps(func)
+        def wrapper_validate_customer_data(*args, **kwargs):
+            validation_error, _ = CustomerValidator(request.get_json(), http_verb).validate()
+            if validation_error:
+                return jsonify(validation_error), 400
 
-        return func(*args, **kwargs)
+            return func(*args, **kwargs)
 
-    return wrapper
+        return wrapper_validate_customer_data
 
-
-def validate_update_customer(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        customer = kwargs.get('customer')
-        data = kwargs.get('data')
-        validation_error, _ = CustomerValidator(data, 'PUT').validate()
-        if validation_error:
-            return jsonify(validation_error), 400
-
-        return func(*args, **kwargs)
-
-    return wrapper
-
-
-def validate_delete_customer(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        data = kwargs.get('data')
-        validation_error, _ = CustomerValidator(data, 'DELETE').validate()
-        if validation_error:
-            return jsonify(validation_error), 400
-
-        return func(*args, **kwargs)
-
-    return wrapper
+    return decorator_validate_customer_data

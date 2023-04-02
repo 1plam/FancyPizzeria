@@ -2,7 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_user, logout_user, login_required
 
 from src.models import Customer
-from src.validators import CustomerValidator, AuthValidator
+from src.validators.auth_validator import validate_login
+from src.validators.customer_validator import validate_customer_data
 
 customer_api_blueprint = Blueprint('customer_api_blueprint', __name__)
 
@@ -25,15 +26,11 @@ def get_customer(customer_id):
 
 
 @customer_api_blueprint.route('/customers', methods=['POST'])
+@validate_customer_data('POST')
 def create_customer():
     data = request.get_json()
     if data is None:
         return jsonify({'error': 'Invalid request data'}), 400
-
-    validator = CustomerValidator(data, request.method)
-    error, status_code = validator.validate()
-    if error:
-        return jsonify(error), status_code
 
     existing_customer = Customer.query.filter_by(username=data.get('username')).first()
     if existing_customer is not None:
@@ -45,6 +42,7 @@ def create_customer():
 
 @customer_api_blueprint.route('/customers/<customer_id>', methods=['PUT'])
 @login_required
+@validate_customer_data('PUT')
 def update_customer(customer_id):
     customer = Customer.query.filter_by(id=customer_id).first()
     if customer is None:
@@ -54,18 +52,14 @@ def update_customer(customer_id):
     if data is None:
         return jsonify({'error': 'Invalid request data'}), 400
 
-    validator = CustomerValidator(data, request.method)
-    error, status_code = validator.validate()
-    if error:
-        return jsonify(error), status_code
-
     customer.update(data.get('username'), data.get('password'), data.get('date_of_birth'))
     return jsonify(customer.to_dict()), 200
 
 
 @customer_api_blueprint.route('/customers/<customer_id>', methods=['DELETE'])
 @login_required
-def delete_customer(customer_id):
+# @validate_customer_data('DELETE')
+def delete_customer_handler(customer_id):
     customer = Customer.query.filter_by(id=customer_id).first()
     if customer is None:
         return jsonify({'error': 'Customer not found'}), 404
@@ -75,15 +69,9 @@ def delete_customer(customer_id):
 
 
 @customer_api_blueprint.route('/login', methods=['POST'])
+@validate_login
 def login():
     data = request.get_json()
-    if data is None:
-        return jsonify({'error': 'Invalid request data'}), 400
-
-    validation_error, status_code = AuthValidator.validate_login(data)
-    if validation_error:
-        return jsonify(validation_error), status_code
-
     username = data.get('username')
     password = data.get('password')
 
