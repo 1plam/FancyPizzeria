@@ -16,6 +16,7 @@ def validate_order_item(view_func):
 
     return wrapper
 
+
 class OrderItemValidator(BaseValidator):
     def __init__(self, data, method):
         super().__init__(data, method)

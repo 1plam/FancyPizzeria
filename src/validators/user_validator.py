@@ -6,22 +6,22 @@ from flask import jsonify, request
 from src.validators.abstractions import BaseValidator
 
 
-def validate_customer_data(http_verb):
-    def decorator_validate_customer_data(func):
+def validate_user_data(http_verb):
+    def decorator_validate_user_data(func):
         @wraps(func)
-        def wrapper_validate_customer_data(*args, **kwargs):
-            validation_error, _ = CustomerValidator(request.get_json(), http_verb).validate()
+        def wrapper_validate_user_data(*args, **kwargs):
+            validation_error, _ = UserValidator(request.get_json(), http_verb).validate()
             if validation_error:
                 return jsonify(validation_error), 400
 
             return func(*args, **kwargs)
 
-        return wrapper_validate_customer_data
+        return wrapper_validate_user_data
 
-    return decorator_validate_customer_data
+    return decorator_validate_user_data
 
 
-class CustomerValidator(BaseValidator):
+class UserValidator(BaseValidator):
     def __init__(self, data, method):
         super().__init__(data, method)
 

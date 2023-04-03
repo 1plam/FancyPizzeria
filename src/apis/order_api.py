@@ -5,7 +5,6 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
 from src.models import Order
-from src.validators.order_validator import validate_order
 
 order_api_blueprint = Blueprint('order_api_blueprint', __name__)
 

@@ -5,27 +5,27 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from src.context import db
 
 
-class Customer(UserMixin, db.Model):
-    """A class representing a customer."""
-    __tablename__ = 'customers'
+class User(UserMixin, db.Model):
+    """A class representing a user."""
+    __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.String(36), primary_key=True)
+    user_id = db.Column(db.String(36), primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
 
     def to_dict(self):
-        """Return a dictionary representation of the customer."""
+        """Return a dictionary representation of the user."""
         return {
-            'id': repr(self.id),
+            'user_id': repr(self.user_id),
             'username': self.username,
             'date_of_birth': self.date_of_birth.isoformat(),
         }
 
     def __repr__(self):
-        """Return a string representation of the customer."""
-        return f"<Customer id={self.id}, username='{self.username}', date_of_birth={self.date_of_birth}>"
+        """Return a string representation of the user."""
+        return f"<User user_id={self.user_id}, username='{self.username}', date_of_birth={self.date_of_birth}>"
 
     @staticmethod
     def hash_password(password):
@@ -33,37 +33,37 @@ class Customer(UserMixin, db.Model):
         return generate_password_hash(password)
 
     def set_password(self, password):
-        """Set the password hash for the customer."""
-        self.password_hash = Customer.hash_password(password)
+        """Set the password hash for the user."""
+        self.password_hash = User.hash_password(password)
 
     def check_password(self, password):
         """Check if the given password is correct."""
         return check_password_hash(self.password_hash, password)
 
     def is_active(self):
-        """Return True if the customer is active."""
+        """Return True if the user is active."""
         return True
 
     def get_id(self):
-        """Return the ID of the customer as a string."""
-        return str(self.id)
+        """Return the ID of the user as a string."""
+        return str(self.user_id)
 
     @classmethod
     def create(cls, username, password, date_of_birth):
-        """Create a new customer."""
-        customer = cls(
-            id=str(uuid.uuid4()),
+        """Create a new user."""
+        user = cls(
+            user_id=str(uuid.uuid4()),
             username=username,
             date_of_birth=date_of_birth,
         )
-        customer.set_password(password)
-        db.session.add(customer)
+        user.set_password(password)
+        db.session.add(user)
         db.session.commit()
 
-        return customer
+        return user
 
     def update(self, username=None, password=None, date_of_birth=None):
-        """Update an existing customer."""
+        """Update an existing user."""
         if username is not None:
             self.username = username
         if password is not None:
@@ -74,7 +74,7 @@ class Customer(UserMixin, db.Model):
         db.session.commit()
 
     @classmethod
-    def delete(cls, customer):
-        """Delete an existing customer."""
-        db.session.delete(customer)
+    def delete(cls, user):
+        """Delete an existing user."""
+        db.session.delete(user)
         db.session.commit()

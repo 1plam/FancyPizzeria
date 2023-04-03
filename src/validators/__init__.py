@@ -1,3 +1,3 @@
 # src/validators/__init__.py
-from .customer_validator import CustomerValidator
+from .user_validator import UserValidator
 from .auth_validator import AuthValidator

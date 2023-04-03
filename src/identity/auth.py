@@ -1,5 +1,5 @@
 from flask_login import LoginManager
-from src.models import Customer
+from src.models import User
 
 login_manager = LoginManager()
 
@@ -11,4 +11,4 @@ def unauthorized():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Customer.query.get(user_id)
+    return User.query.get(user_id)
