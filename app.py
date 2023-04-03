@@ -1,18 +1,14 @@
 import os
-from datetime import datetime
 
-import uuid
 from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_principal import Principal
 
-from src.apis.user_api import user_api_blueprint
-from src.apis.order_api import order_api_blueprint
-from src.apis.order_item_api import order_item_api_blueprint
-from src.context.association_context_table import db
-from src.identity.auth import login_manager
-from src.models import Order, OrderItem
+from src.context import db
+from src.apis import register_blueprints
+from src.handlers import login_manager, load_identity_when_session_exists, register_error_handlers
 
 load_dotenv()
 
@@ -25,26 +21,12 @@ migrate = Migrate(app, db)
 CORS(app)
 
 login_manager.init_app(app)
+principals = Principal(app)
 
-app.register_blueprint(user_api_blueprint)
-app.register_blueprint(order_item_api_blueprint)
-app.register_blueprint(order_api_blueprint)
+load_identity_when_session_exists(app)
 
-with app.app_context():
-    db.create_all()
-
-with app.app_context():
-    order = Order(created_at=datetime.utcnow())
-
-    order_item_1 = OrderItem(id=uuid.uuid4(), name='Hawaiian Pizza', description='Pineapple and ham pizza', price=12.99, order=order)
-    order_item_2 = OrderItem(id=uuid.uuid4(), name='Fanta', description='Orange Fanta', price=1.99, order=order)
-    order.order_items.append(order_item_1)
-    order.order_items.append(order_item_2)
-
-    db.session.add(order)
-    db.session.commit()
-
+register_error_handlers(app)
+register_blueprints(app)
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=8080)
-

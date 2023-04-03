@@ -1,5 +1,8 @@
-from flask import Blueprint, jsonify, request
+from os import abort
+
+from flask import Blueprint, jsonify, request, session
 from flask_login import login_user, logout_user, login_required
+from flask_principal import Permission, RoleNeed
 
 from src.models import User
 from src.validators.auth_validator import validate_login
@@ -7,19 +10,23 @@ from src.validators.user_validator import validate_user_data
 
 user_api_blueprint = Blueprint('user_api_blueprint', __name__)
 
+admin_permission = Permission(RoleNeed('administrator'))
+
 
 @user_api_blueprint.route('/users', methods=['GET'])
 @login_required
+@admin_permission.require(http_exception=403)
 def get_users():
     users = User.query.all()
     user_dicts = [user.to_dict() for user in users]
     return jsonify(user_dicts)
 
 
-@user_api_blueprint.route('/users/<user_id>', methods=['GET'])
+@user_api_blueprint.route('/users/<id>', methods=['GET'])
 @login_required
-def get_user(user_id):
-    user = User.query.filter_by(id=user_id).first()
+@admin_permission.require(http_exception=403)
+def get_user(id):
+    user = User.query.filter_by(id=id).first()
     if user is None:
         return jsonify({'error': 'User not found'}), 404
     return jsonify(user.to_dict())
@@ -40,11 +47,11 @@ def create_user():
     return jsonify(user.to_dict()), 201
 
 
-@user_api_blueprint.route('/users/<user_id>', methods=['PUT'])
+@user_api_blueprint.route('/users/<id>', methods=['PUT'])
 @login_required
 @validate_user_data('PUT')
-def update_user(user_id):
-    user = User.query.filter_by(id=user_id).first()
+def update_user(id):
+    user = User.query.filter_by(id=id).first()
     if user is None:
         return jsonify({'error': 'User not found'}), 404
 
@@ -56,10 +63,11 @@ def update_user(user_id):
     return jsonify(user.to_dict()), 200
 
 
-@user_api_blueprint.route('/users/<user_id>', methods=['DELETE'])
+@user_api_blueprint.route('/users/<id>', methods=['DELETE'])
 @login_required
-def delete_user_handler(user_id):
-    user = User.query.filter_by(id=user_id).first()
+@admin_permission.require(http_exception=403)
+def delete_user(id):
+    user = User.query.filter_by(id=id).first()
     if user is None:
         return jsonify({'error': 'User not found'}), 404
 
@@ -79,11 +87,18 @@ def login():
         return jsonify({'error': 'Invalid username or password'}), 401
 
     login_user(user)
+
+    if user.role == 'administrator':
+        session['admin'] = True
+
     return jsonify(user.to_dict()), 200
 
 
 @user_api_blueprint.route('/logout', methods=['POST'])
 @login_required
 def logout():
+    if 'admin' in session:
+        session.pop('admin')
+
     logout_user()
     return jsonify({'message': 'Logged out successfully'}), 200

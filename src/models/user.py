@@ -10,22 +10,24 @@ class User(UserMixin, db.Model):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
 
-    user_id = db.Column(db.String(36), primary_key=True)
+    id = db.Column(db.String(36), primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
+    role = db.Column(db.Enum('customer', 'administrator', name='user_roles'), nullable=False, default='customer')
 
     def to_dict(self):
         """Return a dictionary representation of the user."""
         return {
-            'user_id': repr(self.user_id),
+            'user_id': repr(self.id),
             'username': self.username,
             'date_of_birth': self.date_of_birth.isoformat(),
+            'role': self.role
         }
 
     def __repr__(self):
         """Return a string representation of the user."""
-        return f"<User user_id={self.user_id}, username='{self.username}', date_of_birth={self.date_of_birth}>"
+        return f"<User user_id={self.id}, username='{self.username}', date_of_birth={self.date_of_birth}, role={self.role}>"
 
     @staticmethod
     def hash_password(password):
@@ -46,15 +48,16 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         """Return the ID of the user as a string."""
-        return str(self.user_id)
+        return str(self.id)
 
     @classmethod
     def create(cls, username, password, date_of_birth):
         """Create a new user."""
         user = cls(
-            user_id=str(uuid.uuid4()),
+            id=str(uuid.uuid4()),
             username=username,
             date_of_birth=date_of_birth,
+            role='customer'
         )
         user.set_password(password)
         db.session.add(user)
