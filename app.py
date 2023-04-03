@@ -27,5 +27,7 @@ app.register_blueprint(customer_api_blueprint)
 app.register_blueprint(order_item_api_blueprint)
 app.register_blueprint(order_api_blueprint)
 
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, host='0.0.0.0', port=8080)
+

@@ -58,7 +58,6 @@ def update_customer(customer_id):
 
 @customer_api_blueprint.route('/customers/<customer_id>', methods=['DELETE'])
 @login_required
-# @validate_customer_data('DELETE')
 def delete_customer_handler(customer_id):
     customer = Customer.query.filter_by(id=customer_id).first()
     if customer is None:

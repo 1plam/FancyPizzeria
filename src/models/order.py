@@ -5,6 +5,7 @@ from .order_item import OrderItem
 
 
 class Order(db.Model):
+    """A class representing an order."""
     __tablename__ = 'orders'
     __table_args__ = {'extend_existing': True}
 
@@ -13,6 +14,7 @@ class Order(db.Model):
     order_items = db.relationship('OrderItem', backref='order', lazy=True, cascade='all, delete-orphan')
 
     def to_dict(self):
+        """Return a dictionary representation of the order."""
         return {
             'id': self.id,
             'created_at': self.created_at,
@@ -20,6 +22,7 @@ class Order(db.Model):
         }
 
     def __repr__(self):
+        """Return a string representation of the order."""
         return f'<Order id={self.id} created_at={self.created_at} order_items={self.order_items}>'
 
     @staticmethod

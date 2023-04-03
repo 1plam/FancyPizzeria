@@ -2,19 +2,23 @@ import uuid
 from datetime import datetime
 
 from flask import Blueprint, jsonify, request
+from flask_login import login_required
 
 from src.models import Order
+from src.validators.order_validator import validate_order
 
 order_api_blueprint = Blueprint('order_api_blueprint', __name__)
 
 
 @order_api_blueprint.route('/orders', methods=['GET'])
+@login_required
 def get_orders():
     orders = Order.query.all()
     return jsonify([order.to_dict() for order in orders])
 
 
 @order_api_blueprint.route('/orders/<id>', methods=['GET'])
+@login_required
 def get_order(id):
     order = Order.query.filter_by(id=id).first()
     if not order:
@@ -23,6 +27,8 @@ def get_order(id):
 
 
 @order_api_blueprint.route('/orders', methods=['POST'])
+@login_required
+# @validate_order
 def create_order():
     data = request.get_json()
     if not data:
@@ -44,6 +50,8 @@ def create_order():
 
 
 @order_api_blueprint.route('/orders/<id>', methods=['PUT'])
+@login_required
+# @validate_order
 def update_order(id):
     order = Order.query.filter_by(id=id).first()
     if not order:
@@ -66,6 +74,7 @@ def update_order(id):
 
 
 @order_api_blueprint.route('/orders/<id>', methods=['DELETE'])
+@login_required
 def delete_order(id):
     order = Order.query.filter_by(id=id).first()
     if not order:

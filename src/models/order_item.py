@@ -4,6 +4,7 @@ from src.context import db
 
 
 class OrderItem(db.Model):
+    """A class representing an order item."""
     __tablename__ = 'order_items'
     __table_args__ = {'extend_existing': True}
 
@@ -14,6 +15,7 @@ class OrderItem(db.Model):
     order_id = db.Column(db.String(36), db.ForeignKey('orders.id', ondelete='CASCADE'), nullable=True)
 
     def to_dict(self):
+        """Return a dictionary representation of the order item."""
         return {
             'id': self.id,
             'name': self.name,
@@ -22,6 +24,7 @@ class OrderItem(db.Model):
         }
 
     def __repr__(self):
+        """Return a string representation of the order item."""
         return f'<OrderItem id={self.id} name={self.name} description={self.description} price={self.price} order_id={self.order_id}>'
 
     @classmethod
