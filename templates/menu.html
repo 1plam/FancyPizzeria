@@ -68,7 +68,7 @@
                 <div class="flex space-x-4">
                     <a href="/index" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Home</a>
                     <a href="/menu" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Menu</a>
-                    {% if current_user.is_authenticated and current_user.is_active and current_user.order %}
+                    {% if current_user.is_authenticated and current_user.is_active and 'order_id' in session %}
                         <a href="/orders" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Order</a>
                     {% endif %}
                     {% if current_user.is_authenticated and current_user.is_active %}
@@ -98,7 +98,7 @@
                         <div>
                         <h3 class="cartoon text-sm text-black">
                             {% if current_user.is_authenticated %}
-                                <a href="#" onclick="document.getElementById('add-to-cart-form-{{ product.id }}').submit(); return false;">
+                                <a href="#" onclick="document.getElementById('add-to-cart-form').submit(); return false;">
                             {% else %}
                                 <a href="/login">
                             {% endif %}
