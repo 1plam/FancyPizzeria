@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cartoon{
+    font-family: "ab-j-gu", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.type{
+    font-family: "anisette-std", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.bg {
+    background-image: url("./bg.png");
+    background-repeat: repeat;
+    background-size: cover;
+}

@@ -1,18 +1,6 @@
 version: '3.9'
 
 services:
-  db:
-    image: mysql:latest
-    container_name: pizzeria-data
-    environment:
-      MYSQL_DATABASE: pizzeria
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: plam
-      MYSQL_PASSWORD: rootpass
-    ports:
-      - "33061:3306"
-    volumes:
-      - ./data:/var/lib/mysql
   app:
     build: .
     container_name: pizzeria-app
@@ -24,7 +12,36 @@ services:
       - MYSQL_PORT=3306
       - MYSQL_USER=plam
       - MYSQL_PASSWORD=rootpass
-      - MYSQL_DB=pizzeria
+      - MYSQL_DB=pizzeria_db
       - MYSQL_CHARSET=utf8mb4
     depends_on:
       - db
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    networks:
+      - pizzeria-network
+
+  db:
+    image: mysql:8.0
+    container_name: pizzeria-data
+    environment:
+      MYSQL_DATABASE: pizzeria_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: plam
+      MYSQL_PASSWORD: rootpass
+    ports:
+      - "33061:3306"
+    volumes:
+      - pizzeria-data:/var/lib/mysql
+    restart: always
+    networks:
+      - pizzeria-network
+
+volumes:
+  pizzeria-data:
+
+networks:
+  pizzeria-network:

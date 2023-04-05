@@ -6,8 +6,8 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_principal import Principal
 
-from src.context import db
 from src.apis import register_blueprints
+from src.context import db
 from src.handlers import login_manager, load_identity_when_session_exists, register_error_handlers
 
 load_dotenv()
@@ -27,6 +27,7 @@ load_identity_when_session_exists(app)
 
 register_error_handlers(app)
 register_blueprints(app)
+
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=8080)

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        (function(d) {
+            let config = {
+                    kitId: 'jfo5nkt',
+                    scriptTimeout: 3000,
+                    async: true
+                },
+                h = d.documentElement, t = setTimeout(function () {
+                    h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+                }, config.scriptTimeout), tk = d.createElement("script"), f = false,
+                s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+        })(document);
+    </script>
+
+    <script>
+        (function(d) {
+            let config = {
+                    kitId: 'jfo5nkt',
+                    scriptTimeout: 3000,
+                    async: true
+                },
+                h = d.documentElement, t = setTimeout(function () {
+                    h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+                }, config.scriptTimeout), tk = d.createElement("script"), f = false,
+                s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+        })(document);
+    </script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/templates/dist/output.css" rel="stylesheet">
+    <title>M&L Login</title>
+</head>
+
+<body class="bg">
+    <!--M&L Nav Bar-->
+    <nav class="fixed top-10 w-full">
+        <div class="mx-auto max-w-1xl px-2 sm:px-6 lg:px-8">
+          <div class="relative flex h-16 items-center justify-between">
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div class="flex flex-shrink-0 items-center">
+                <a href="./index.html"><img class="h-8 w-auto lg:block" src="./img/pizza.png" alt="M&L"></a>
+                <a href="./index.html" class="cartoon text-black rounded-md px-3 py-2 text-xl font-medium">M&L Pizza</a>
+              </div>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div class="flex space-x-4">
+                    <a href="./index.html" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Home</a>
+
+                    <a href="./menu.html" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Menu</a>
+        
+                    <a href="./order.html" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Order</a>
+        
+                    <a href="#" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Login</a>
+        
+                    <a href="#" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Support</a>
+                  </div>
+            </div>
+          </div>
+        </div>
+    </nav>
+<!--M&L Login Content-->
+    <div class="h-screen flex flex-col justify-center items-center ">
+        <div class="grid grid-cols-2 gap-4 place-content-center">
+            <div class="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+                <div class="w-full max-w-md space-y-8">
+                  <div>
+                    <img class="mx-auto h-12 w-auto" src="./img/pizza.png" alt="M&L Logo">
+                    <h2 class="cartoon mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
+                  </div>
+                  <form class="mt-8 space-y-6" action="#" method="POST">
+                    <input type="hidden" name="remember" value="true">
+                    <div class="-space-y-px rounded-md shadow-sm">
+                      <div>
+                        <label for="username" class="sr-only">Username</label>
+                        <input id="username" name="username" type="username" autocomplete="username" required class="type relative block w-full rounded-t-md border-0 py-1.5 px-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6" placeholder="username">
+                      </div>
+                      <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input id="password" name="password" type="password" autocomplete="current-password" required class="type relative block w-full rounded-b-md border-0 py-1.5 px-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6" placeholder="password">
+                      </div>
+                    </div>
+              
+                    <div class="flex items-center justify-between">
+                      <div class="text-sm">
+                        <a href="#" class="type font-medium text-red-600 hover:text-red-500">sign up now!</a>
+                      </div>
+              
+                      <div class="text-sm">
+                        <a href="#" class="type font-medium text-red-600 hover:text-red-500">forgot your password?</a>
+                      </div>
+                    </div>
+              
+                    <div>
+                      <button type="submit" class="cartoon group relative flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                          <svg class="h-5 w-5 text-red-500 group-hover:text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                        Sign in
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            <div>
+                <img class="w-full px-8 pt-8 text-4xl" src="img/pm-pizza.png">
+            </div>
+        </div>
+    </div>
+<!--M&L Footer-->
+    <div class="fixed bottom-0 w-full">
+        <footer class="bg-black rounded-lg shadow m-4">
+            <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+            <span class="type text-sm text-white sm:text-center">© 2023 <a href="#" class="hover:underline">M&L PIZZA™</a>. all rights reserved.
+            </span>
+            <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-white sm:mt-0">
+                <li>
+                    <a href="#" class="cartoon mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium md:mr-6 ">About</a>
+                </li>
+                <li>
+                    <a href="#" class="cartoon mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium md:mr-6">Privacy Policy</a>
+                </li>
+                <li>
+                    <a href="#" class="cartoon mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium">Contact</a>
+                </li>
+            </ul>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

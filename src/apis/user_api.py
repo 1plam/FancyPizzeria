@@ -1,5 +1,3 @@
-from os import abort
-
 from flask import Blueprint, jsonify, request, session
 from flask_login import login_user, logout_user, login_required
 from flask_principal import Permission, RoleNeed
@@ -27,7 +25,7 @@ def get_users():
 @admin_permission.require(http_exception=403)
 def get_user(id):
     user = User.query.filter_by(id=id).first()
-    if user is None:
+    if not user:
         return jsonify({'error': 'User not found'}), 404
     return jsonify(user.to_dict())
 
@@ -36,11 +34,11 @@ def get_user(id):
 @validate_user_data('POST')
 def create_user():
     data = request.get_json()
-    if data is None:
+    if not data:
         return jsonify({'error': 'Invalid request data'}), 400
 
     existing_user = User.query.filter_by(username=data.get('username')).first()
-    if existing_user is not None:
+    if existing_user:
         return jsonify({'error': 'Username already exists'}), 409
 
     user = User.create(data.get('username'), data.get('password'), data.get('date_of_birth'))
@@ -52,11 +50,11 @@ def create_user():
 @validate_user_data('PUT')
 def update_user(id):
     user = User.query.filter_by(id=id).first()
-    if user is None:
+    if not user:
         return jsonify({'error': 'User not found'}), 404
 
     data = request.get_json()
-    if data is None:
+    if not data:
         return jsonify({'error': 'Invalid request data'}), 400
 
     user.update(data.get('username'), data.get('password'), data.get('date_of_birth'))
@@ -68,7 +66,7 @@ def update_user(id):
 @admin_permission.require(http_exception=403)
 def delete_user(id):
     user = User.query.filter_by(id=id).first()
-    if user is None:
+    if not user:
         return jsonify({'error': 'User not found'}), 404
 
     User.delete(user)
