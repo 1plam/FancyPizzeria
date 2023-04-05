@@ -12,7 +12,7 @@ from src.handlers import login_manager, load_identity_when_session_exists, regis
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_url_path="/static")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 

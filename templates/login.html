@@ -29,10 +29,34 @@
         })(document);
     </script>
 
+    <script>
+        function submitForm(event) {
+          event.preventDefault();
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/login');
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              const user = JSON.parse(xhr.responseText);
+              const successMessage = `Welcome ${user.name}!`;
+              alert(successMessage);
+            } else {
+              const error = JSON.parse(xhr.responseText);
+              const errorMessage = error.message;
+              alert(errorMessage);
+            }
+          };
+          xhr.send(JSON.stringify({ username, password }));
+        }
+    </script>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/templates/dist/output.css" rel="stylesheet">
+    <link href="/static/css/build.css" rel="stylesheet">
+    <link href="/static/css/input.css" rel="stylesheet">
     <title>M&L Login</title>
 </head>
 
@@ -43,19 +67,19 @@
           <div class="relative flex h-16 items-center justify-between">
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div class="flex flex-shrink-0 items-center">
-                <a href="./index.html"><img class="h-8 w-auto lg:block" src="./img/pizza.png" alt="M&L"></a>
+                <a href="./index.html"><img class="h-8 w-auto lg:block" src="../static/img/pizza.png" alt="M&L"></a>
                 <a href="./index.html" class="cartoon text-black rounded-md px-3 py-2 text-xl font-medium">M&L Pizza</a>
               </div>
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div class="flex space-x-4">
-                    <a href="./index.html" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Home</a>
+                    <a href="/" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Home</a>
 
-                    <a href="./menu.html" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Menu</a>
+                    <a href="/menu" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Menu</a>
         
-                    <a href="./order.html" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Order</a>
+                    <a href="/order" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Order</a>
         
-                    <a href="#" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Login</a>
+                    <a href="/login" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Login</a>
         
                     <a href="#" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Support</a>
                   </div>
@@ -69,22 +93,22 @@
             <div class="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
                 <div class="w-full max-w-md space-y-8">
                   <div>
-                    <img class="mx-auto h-12 w-auto" src="./img/pizza.png" alt="M&L Logo">
+                    <img class="mx-auto h-12 w-auto" src="../static/img/pizza.png" alt="M&L Logo">
                     <h2 class="cartoon mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
                   </div>
-                  <form class="mt-8 space-y-6" action="#" method="POST">
+                    <form class="mt-8 space-y-6" action="/login" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="remember" value="true">
                     <div class="-space-y-px rounded-md shadow-sm">
                       <div>
                         <label for="username" class="sr-only">Username</label>
-                        <input id="username" name="username" type="username" autocomplete="username" required class="type relative block w-full rounded-t-md border-0 py-1.5 px-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6" placeholder="username">
+                        <input id="username" type="username" autocomplete="username" required class="type relative block w-full rounded-t-md border-0 py-1.5 px-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6" placeholder="username">
                       </div>
                       <div>
                         <label for="password" class="sr-only">Password</label>
-                        <input id="password" name="password" type="password" autocomplete="current-password" required class="type relative block w-full rounded-b-md border-0 py-1.5 px-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6" placeholder="password">
+                        <input id="password" type="password" autocomplete="current-password" required class="type relative block w-full rounded-b-md border-0 py-1.5 px-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6" placeholder="password">
                       </div>
                     </div>
-              
+
                     <div class="flex items-center justify-between">
                       <div class="text-sm">
                         <a href="#" class="type font-medium text-red-600 hover:text-red-500">sign up now!</a>
@@ -109,7 +133,7 @@
                 </div>
               </div>
             <div>
-                <img class="w-full px-8 pt-8 text-4xl" src="img/pm-pizza.png">
+                <img class="w-full px-8 pt-8 text-4xl" src="../static/img/pm-pizza.png">
             </div>
         </div>
     </div>
