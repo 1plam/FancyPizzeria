@@ -1,0 +1,3 @@
+c1ad0280-d35f-4a59-a2cc-72adb1c9e4d3,Mario,pbkdf2:sha256:260000$FS6vjivJOggZhM0u$12185fe2171d61cdff709793e92d70ed721aee2502a8d71d7c512199d82e1c55,administrator
+cff90e23-17a4-44f7-b304-50fe62f6f052,Daniel,pbkdf2:sha256:260000$1akhjbflWWNfjTvX$36e97cf5fcfc3dc18fe5ec3213c020a846f7304b9de5c7dc4b3a4a47ce5c7c64,customer
+ec9ef18a-f11d-435f-a4d5-67dac838857a,Luigi,pbkdf2:sha256:260000$EQDgRCevHGJ6GZ1a$13d697faaff91c6ed5ace36ef82758f7a511c19ff7c4abf1973bd93b8ade76af,administrator

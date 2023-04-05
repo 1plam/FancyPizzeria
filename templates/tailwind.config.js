@@ -5,10 +5,13 @@ module.exports = {
     './pages/**/*.{html,js}',
     './index.html',
     './menu.html',
+    './menu.html',
     './order.html',
     './login.html',
+    './signup.html',
     './payment.html',
-    './kitchen.html'
+    './kitchen.html',
+    './modal.html'
   ],
   theme: {
     extend: {},

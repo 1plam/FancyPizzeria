@@ -14,7 +14,6 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-
     <script>
         (function(d) {
             let config = {
@@ -28,10 +27,10 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/output.css" rel="stylesheet">
     <link href="/static/css/build.css" rel="stylesheet">
     <link href="/static/css/input.css" rel="stylesheet">
     <title>M&L Order</title>
@@ -50,17 +49,17 @@
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div class="flex space-x-4">
-                    <a href="/index" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Home</a>
+                    <a href="/index" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium">Home</a>
                     <a href="/menu" class="cartoon text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Menu</a>
                     {% if current_user.is_authenticated and current_user.is_active and 'order_id' in session %}
                         <a href="/orders" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Order</a>
                     {% endif %}
                     {% if current_user.is_authenticated and current_user.is_active %}
                         <form action="/logout" method="POST">
-                            <button type="submit" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Logout</button>
+                            <button type="submit" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium">Logout</button>
                         </form>
                     {% else %}
-                        <a href="/login" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Login</a>
+                        <a href="/login" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium">Login</a>
                     {% endif %}
                     <a href="#" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Support</a>
                   </div>
@@ -73,6 +72,7 @@
         <div class="grid grid-cols-2 gap-4 place-content-center">
             <div>
                 <div class="col-span-2 p-5">
+                <h1 class="text-xl font-medium">Your last order:</h1>
                     {% if order %}
                         {% set total_price = 0 %}
                         {% for order_item in order.order_items %}
@@ -97,7 +97,7 @@
                         {% endfor %}
                         <div class="flex justify-between items-center mt-6 pt-6 border-t">
                             <div class="flex justify-center items-end">
-                                <span class="text-lg font-bold text-gray-600 mr-1">Total paid: <span id="total-price">{{ total_price }}</span>$</span>
+                                <span class="text-xl font-medium text-gray-600 mr-1">Total paid: <span id="total-price">{{ total_price }}</span>$</span>
                             </div>
                         </div>
                         <script>

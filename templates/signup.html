@@ -33,13 +33,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/css/output.css" rel="stylesheet">
+    <link href="/static/css/build.css" rel="stylesheet">
     <link href="/static/css/input.css" rel="stylesheet">
-    <title>M&L Pizza</title>
+    <title>M&L Login</title>
 </head>
 
 <body class="bg">
     <!--M&L Nav Bar-->
-    <nav class="fixed top-10 w-full">
+        <nav class="fixed top-10 w-full">
         <div class="mx-auto max-w-1xl px-2 sm:px-6 lg:px-8">
           <div class="relative flex h-16 items-center justify-between">
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -50,7 +51,7 @@
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div class="flex space-x-4">
-                    <a href="/index" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Home</a>
+                    <a href="/index" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium">Home</a>
                     <a href="/menu" class="cartoon text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Menu</a>
                     {% if current_user.is_authenticated and current_user.is_active and 'order_id' in session %}
                         <a href="/orders" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium">Order</a>
@@ -68,21 +69,42 @@
           </div>
         </div>
     </nav>
-<!--M&L Hero Center Columns-->
+<!--M&L Login Content-->
     <div class="h-screen flex flex-col justify-center items-center ">
         <div class="grid grid-cols-2 gap-4 place-content-center">
-            <div class="cartoon w-full px-8 text-4xl">
-                <p class="h-auto text-center">
-                    Enjoy the incredible taste of 'Mario & Luigi's' pizza. Order now and get free delivery!
-                </p>
-                <div class="grid place-content-center pt-5">
-                    <a href="/menu" class="cartoon text-white bg-red-600 hover:bg-blue-600 hover:animate-pulse transition-colors font-medium rounded-full text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2">
-                        Order now!
-                    </a>
+            <div class="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+                <div class="w-full max-w-md space-y-8">
+                  <div>
+                    <img class="mx-auto h-12 w-auto" src="../static/img/pizza.png" alt="M&L Logo">
+                    <h2 class="cartoon mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">Create your own account</h2>
+                  </div>
+                  <form class="mt-8 space-y-6" action="/users" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="remember" value="true">
+                    <div class="-space-y-px rounded-md shadow-sm">
+                      <div>
+                        <label for="username" class="sr-only">username</label>
+                        <input id="username" name="username" autocomplete="username" required class="type relative block w-full rounded-t-md border-0 py-1.5 px-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6" placeholder="your username">
+                      </div>
+                      <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input id="password" name="password" type="password" autocomplete="current-password" required class="type relative block w-full rounded-b-md border-0 py-1.5 px-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6" placeholder="your password">
+                      </div>
+                    </div>
+                    <div>
+                      <button type="submit" class="cartoon group relative flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                          <svg class="h-5 w-5 text-red-500 group-hover:text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd"></path>
+                          </svg>
+                        </span>
+                        Create Account
+                      </button>
+                    </div>
+                  </form>
                 </div>
-            </div>
+              </div>
             <div>
-                <img class="w-full px-8 text-4xl" src="../static/img/pm-pizza.png">
+                <img class="w-full px-8 pt-8 text-4xl" src="../static/img/pm-pizza.png">
             </div>
         </div>
     </div>
@@ -94,17 +116,18 @@
             </span>
             <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-white sm:mt-0">
                 <li>
-                    <a href="#" class="cartoon transition-all mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium md:mr-6 ">About</a>
+                    <a href="#" class="cartoon mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium md:mr-6 ">About</a>
                 </li>
                 <li>
-                    <a href="#" class="cartoon transition-all mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium md:mr-6">Privacy Policy</a>
+                    <a href="#" class="cartoon mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium md:mr-6">Privacy Policy</a>
                 </li>
                 <li>
-                    <a href="#" class="cartoon transition-all mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium">Contact</a>
+                    <a href="#" class="cartoon mr-4 hover:bg-white hover:text-black rounded-md px-3 py-2 text-sm font-medium">Contact</a>
                 </li>
             </ul>
             </div>
         </footer>
     </div>
+
 </body>
 </html>

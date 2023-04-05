@@ -1,4 +1,5 @@
 import uuid
+
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -13,7 +14,6 @@ class User(UserMixin, db.Model):
     id = db.Column(db.String(36), primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
-    date_of_birth = db.Column(db.Date, nullable=False)
     role = db.Column(db.Enum('customer', 'administrator', name='user_roles'), nullable=False, default='customer')
 
     def to_dict(self):
@@ -21,13 +21,12 @@ class User(UserMixin, db.Model):
         return {
             'user_id': repr(self.id),
             'username': self.username,
-            'date_of_birth': self.date_of_birth.isoformat(),
             'role': self.role
         }
 
     def __repr__(self):
         """Return a string representation of the user."""
-        return f"<User user_id={self.id}, username='{self.username}', date_of_birth={self.date_of_birth}, role={self.role}>"
+        return f"<User user_id={self.id}, username='{self.username}', role={self.role}>"
 
     @staticmethod
     def hash_password(password):
@@ -52,12 +51,11 @@ class User(UserMixin, db.Model):
         return str(self.id)
 
     @classmethod
-    def create(cls, username, password, date_of_birth):
+    def create(cls, username, password):
         """Create a new user."""
         user = cls(
             id=str(uuid.uuid4()),
             username=username,
-            date_of_birth=date_of_birth,
             role='customer'
         )
         user.set_password(password)
@@ -66,14 +64,12 @@ class User(UserMixin, db.Model):
 
         return user
 
-    def update(self, username=None, password=None, date_of_birth=None):
+    def update(self, username=None, password=None):
         """Update an existing user."""
         if username is not None:
             self.username = username
         if password is not None:
             self.set_password(password)
-        if date_of_birth is not None:
-            self.date_of_birth = date_of_birth
 
         db.session.commit()
 

@@ -17,7 +17,7 @@ admin_permission = Permission(RoleNeed('administrator'))
 def get_users():
     users = User.query.all()
     user_dicts = [user.to_dict() for user in users]
-    return jsonify(user_dicts)
+    return jsonify(user_dicts), 200
 
 
 @user_api_blueprint.route('/users/<id>', methods=['GET'])
@@ -27,21 +27,23 @@ def get_user(id):
     user = User.query.filter_by(id=id).first()
     if not user:
         return jsonify({'error': 'User not found'}), 404
-    return jsonify(user.to_dict())
+    return jsonify(user.to_dict()), 200
 
 
 @user_api_blueprint.route('/users', methods=['POST'])
 @validate_user_data('POST')
 def create_user():
-    data = request.get_json()
-    if not data:
+    username = request.form['username']
+    password = request.form['password']
+
+    if not [username, password]:
         return jsonify({'error': 'Invalid request data'}), 400
 
-    existing_user = User.query.filter_by(username=data.get('username')).first()
+    existing_user = User.query.filter_by(username=username).first()
     if existing_user:
         return jsonify({'error': 'Username already exists'}), 409
 
-    user = User.create(data.get('username'), data.get('password'), data.get('date_of_birth'))
+    user = User.create(username, password)
     return jsonify(user.to_dict()), 201
 
 
@@ -53,11 +55,13 @@ def update_user(id):
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
-    data = request.get_json()
-    if not data:
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not [username, password]:
         return jsonify({'error': 'Invalid request data'}), 400
 
-    user.update(data.get('username'), data.get('password'), data.get('date_of_birth'))
+    user.update(username, password)
     return jsonify(user.to_dict()), 200
 
 

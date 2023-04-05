@@ -14,7 +14,6 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-
     <script>
         (function(d) {
             let config = {
@@ -37,9 +36,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/static/css/output.css" rel="stylesheet">
+    <link href="../static/css/output.css" rel="stylesheet">
     <title>M&L Payment</title>
 </head>
+
 <body>
     <div class="h-screen bg-gray-300">
         <div class="py-52">
@@ -95,8 +95,8 @@
                                   {% endif %}
                                 </div>
                             </div>
+                            <!--Order Card Details-->
                         </div>
-                        <!--Order Card Details-->
                         <div class=" p-5 bg-gray-800 rounded overflow-visible">
                             <span class="text-xl font-medium text-gray-100 block pb-3">Card Details</span>
                             <span class="text-xs text-gray-400 ">Card Type</span>
@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="">
                                     <label class="text-xs text-gray-400">CVV</label>
-                                    <input type="te xt" maxlength="3" class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4" placeholder="XXX">
+                                    <input type="text" maxlength="3" class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4" placeholder="XXX">
                                 </div>
                             </div>
                             <form method="POST" action="{{ url_for('cart_api_blueprint.checkout') }}">

@@ -2,7 +2,6 @@ from functools import wraps
 
 from flask import jsonify, request
 
-
 from src.validators.abstractions import BaseValidator
 
 
@@ -10,7 +9,7 @@ def validate_user_data(http_verb):
     def decorator_validate_user_data(func):
         @wraps(func)
         def wrapper_validate_user_data(*args, **kwargs):
-            validation_error, _ = UserValidator(request.form.to_dict(), http_verb).validate()
+            validation_error, _ = UserValidator(request.form, http_verb).validate()
             if validation_error:
                 return jsonify(validation_error), 400
 
@@ -28,20 +27,16 @@ class UserValidator(BaseValidator):
     def validate_create(self):
         username = self.data.get('username')
         password = self.data.get('password')
-        date_of_birth = self.data.get('date_of_birth')
 
-        if not all([username, password, date_of_birth]):
-            return {'error': 'Validation error: Missing required fields'}, 400
+        if not all([username, password]):
+            return {
+                'error': f'Missing required fields. Username: {username}, Password: {password}'}, 400
 
         error, status_code = self.validate_username(username)
         if error:
             return error, status_code
 
         error, status_code = self.validate_password(password)
-        if error:
-            return error, status_code
-
-        error, status_code = self.validate_date_of_birth(date_of_birth)
         if error:
             return error, status_code
 
@@ -59,11 +54,6 @@ class UserValidator(BaseValidator):
 
         if password is not None:
             error, status_code = self.validate_password(password)
-            if error:
-                return error, status_code
-
-        if date_of_birth is not None:
-            error, status_code = self.validate_date_of_birth(date_of_birth)
             if error:
                 return error, status_code
 

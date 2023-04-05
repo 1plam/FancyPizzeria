@@ -6,6 +6,7 @@ ROUTES = [
     ('index', 'index.html'),
     ('menu', 'menu.html'),
     ('orders', 'order.html'),
+    ('signup', 'signup.html'),
     ('login', 'login.html'),
     ('logout', 'index.html'),
     ('payment', 'payment.html'),
