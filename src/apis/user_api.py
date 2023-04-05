@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, session, redirect
+from flask import Blueprint, jsonify, request, session, redirect, flash
 from flask_login import login_user, logout_user, login_required
 from flask_principal import Permission, RoleNeed
 
@@ -76,20 +76,21 @@ def delete_user(id):
 @user_api_blueprint.route('/login', methods=['POST'])
 @validate_login
 def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    username = request.form['username']
+    password = request.form['password']
 
     user = User.query.filter_by(username=username).first()
     if user is None or not user.check_password(password):
-        return jsonify({'error': 'Invalid username or password'}), 401
+        flash('Please check your login details and try again.')
+        return redirect("/login")
 
     login_user(user)
 
     if user.role == 'administrator':
         session['admin'] = True
-        redirect("templates/kitchen.html")
+        return redirect("/kitchen")
 
-    return jsonify(user.to_dict()), 200
+    return redirect("/index")
 
 
 @user_api_blueprint.route('/logout', methods=['POST'])
@@ -99,4 +100,4 @@ def logout():
         session.pop('admin')
 
     logout_user()
-    return jsonify({'message': 'Logged out successfully'}), 200
+    return redirect("/index")

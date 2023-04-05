@@ -42,6 +42,7 @@ class User(UserMixin, db.Model):
         """Check if the given password is correct."""
         return check_password_hash(self.password_hash, password)
 
+    @property
     def is_active(self):
         """Return True if the user is active."""
         return True

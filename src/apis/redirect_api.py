@@ -2,23 +2,25 @@ from flask import Blueprint, render_template
 
 redirect_api_blueprint = Blueprint('redirect_api', __name__)
 
+ROUTES = [
+    ('index', 'index.html'),
+    ('menu', 'menu.html'),
+    ('orders', 'order.html'),
+    ('login', 'login.html'),
+    ('logout', 'index.html'),
+    ('payment', 'payment.html'),
+    ('kitchen', 'kitchen.html'),
+]
+
 
 @redirect_api_blueprint.route('/')
-def index():
+def handle_index():
     return render_template('index.html')
 
-@redirect_api_blueprint.route('/menu')
-def menu():
-    return render_template('menu.html')
 
-@redirect_api_blueprint.route('/order')
-def order():
-    return render_template('order.html')
-
-@redirect_api_blueprint.route('/login')
-def login():
-    return render_template('login.html')
-
-@redirect_api_blueprint.route('/payment')
-def payment():
-    return render_template('payment.html')
+@redirect_api_blueprint.route('/<path:route>')
+def handle_route(route):
+    for r, template in ROUTES:
+        if route == r:
+            return render_template(template)
+    return 'Not found', 404

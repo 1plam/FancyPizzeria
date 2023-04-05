@@ -6,7 +6,7 @@ from flask import jsonify, request
 def validate_order(view_func):
     @wraps(view_func)
     def wrapper(*args, **kwargs):
-        validator = OrderValidator(request.get_json(), request.method)
+        validator = OrderValidator(request.form, request.method)
         validation_result, status_code = validator.validate()
         if validation_result:
             return jsonify(validation_result), status_code

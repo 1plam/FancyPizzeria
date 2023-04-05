@@ -17,7 +17,7 @@ class AuthValidator:
 def validate_login(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        data = request.get_json()
+        data = request.form
         validation_error, status_code = AuthValidator.validate_login(data)
 
         if validation_error:

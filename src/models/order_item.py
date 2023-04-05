@@ -14,13 +14,24 @@ class OrderItem(db.Model):
     price = db.Column(db.Float(precision=2), nullable=False)
     order_id = db.Column(db.String(36), db.ForeignKey('orders.id', ondelete='CASCADE'), nullable=True)
 
-    def to_dict(self):
+    @classmethod
+    def from_dict(cls, data):
+        """Create an OrderItem instance from a dictionary."""
+        return cls(
+            id=str(uuid.uuid4()),
+            name=data['name'],
+            description=data['description'],
+            price=data['price']
+        )
+
+    @classmethod
+    def to_dict(cls):
         """Return a dictionary representation of the order item."""
         return {
-            'id': self.id,
-            'name': self.name,
-            'description': self.description,
-            'price': self.price
+            'id': cls.id,
+            'name': cls.name,
+            'description': cls.description,
+            'price': cls.price
         }
 
     def __repr__(self):
@@ -36,9 +47,9 @@ class OrderItem(db.Model):
             description=description,
             price=price
         )
+
         db.session.add(order_item)
         db.session.commit()
-
         return order_item
 
     def update(self, name=None, description=None, price=None):

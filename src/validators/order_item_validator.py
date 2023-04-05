@@ -8,7 +8,7 @@ from src.validators.abstractions import BaseValidator
 def validate_order_item(view_func):
     @wraps(view_func)
     def wrapper(*args, **kwargs):
-        validator = OrderItemValidator(request.get_json(), request.method)
+        validator = OrderItemValidator(request.form, request.method)
         validation_result, status_code = validator.validate()
         if validation_result:
             return jsonify(validation_result), status_code

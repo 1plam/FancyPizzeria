@@ -28,7 +28,6 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!=="complete"&&a!=="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,20 +44,24 @@
           <div class="relative flex h-16 items-center justify-between">
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div class="flex flex-shrink-0 items-center">
-                <a href="#"><img class="h-8 w-auto lg:block" src="../static/img/pizza.png" alt="M&L"></a>
-                <a href="#" class="cartoon text-black rounded-md px-3 py-2 text-xl font-medium">M&L Pizza</a>
+                <a href="/index"><img class="h-8 w-auto lg:block" src="../static/img/pizza.png" alt="M&L"></a>
+                <a href="/index" class="cartoon text-black rounded-md px-3 py-2 text-xl font-medium">M&L Pizza</a>
               </div>
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div class="flex space-x-4">
-                    <a href="/" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Home</a>
-
+                    <a href="/index" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Home</a>
                     <a href="/menu" class="cartoon text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Menu</a>
-        
-                    <a href="/order" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Order</a>
-        
-                    <a href="/login" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Login</a>
-        
+                    {% if current_user.is_authenticated and current_user.is_active and current_user.order %}
+                        <a href="/orders" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Order</a>
+                    {% endif %}
+                    {% if current_user.is_authenticated and current_user.is_active %}
+                        <form action="/logout" method="POST">
+                            <button type="submit" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Logout</button>
+                        </form>
+                    {% else %}
+                        <a href="/login" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium bg-blue-600">Login</a>
+                    {% endif %}
                     <a href="#" class="cartoon transition-all text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Support</a>
                   </div>
             </div>
@@ -73,7 +76,7 @@
                     Enjoy the incredible taste of 'Mario & Luigi's' pizza. Order now and get free delivery!
                 </p>
                 <div class="grid place-content-center pt-5">
-                    <a href="./menu.html" class="cartoon text-white bg-red-600 hover:bg-blue-600 hover:animate-pulse transition-colors font-medium rounded-full text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2">
+                    <a href="/menu" class="cartoon text-white bg-red-600 hover:bg-blue-600 hover:animate-pulse transition-colors font-medium rounded-full text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2">
                         Order now!
                     </a>
                 </div>

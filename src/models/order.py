@@ -30,12 +30,12 @@ class Order(db.Model):
         """Create a new order with the given items."""
         order = Order(id=id, created_at=created_at)
 
-        for item_data in order_items:
-            item_uuid = item_data['id']
-            existing_item = OrderItem.query.filter_by(id=item_uuid).first()
+        for item in order_items:
+            item_name = item['name']
+            existing_item = OrderItem.query.filter_by(name=item_name).first()
 
             if not existing_item:
-                raise ValueError(f"Item with ID {item_uuid} does not exist in the database.")
+                raise ValueError(f"Item with name {item_name} does not exist in the database.")
 
             order_item = OrderItem(id=uuid.uuid4(), name=existing_item.name, description=existing_item.description,
                                    price=existing_item.price)

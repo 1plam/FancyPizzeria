@@ -10,7 +10,7 @@ def validate_user_data(http_verb):
     def decorator_validate_user_data(func):
         @wraps(func)
         def wrapper_validate_user_data(*args, **kwargs):
-            validation_error, _ = UserValidator(request.get_json(), http_verb).validate()
+            validation_error, _ = UserValidator(request.form.to_dict(), http_verb).validate()
             if validation_error:
                 return jsonify(validation_error), 400
 
@@ -48,10 +48,9 @@ class UserValidator(BaseValidator):
         return None, None
 
     def validate_update(self):
-        data = self.data
-        username = data.get('username')
-        password = data.get('password')
-        date_of_birth = data.get('date_of_birth')
+        username = self.data.get('username')
+        password = self.data.get('password')
+        date_of_birth = self.data.get('date_of_birth')
 
         if username is not None:
             error, status_code = self.validate_username(username)

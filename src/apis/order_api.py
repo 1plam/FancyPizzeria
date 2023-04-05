@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template, session
 from flask_login import login_required
 
 from src.apis.user_api import admin_permission
@@ -12,17 +12,21 @@ order_api_blueprint = Blueprint('order_api_blueprint', __name__)
 
 @order_api_blueprint.route('/orders', methods=['GET'])
 @login_required
-@admin_permission.require(http_exception=403)
-def get_orders():
-    orders = Order.query.all()
-    orders_dict = [order.to_dict() for order in orders]
-    return jsonify(orders_dict)
+def get_order():
+    order_id = session.get('order_id')
+    if order_id:
+        order = Order.query.get(order_id)
+        if order:
+            total_price = sum(item.price for item in order.order_items)
+            return render_template('order.html', order=order, total_price=total_price)
+
+    return render_template('order.html', order=None, total_price=0)
 
 
 @order_api_blueprint.route('/orders/<id>', methods=['GET'])
 @login_required
 @admin_permission.require(http_exception=403)
-def get_order(id):
+def get_order_by_id(id):
     order = Order.query.filter_by(id=id).first()
     if not order:
         return jsonify({'error': 'Order not found'}), 404
@@ -32,38 +36,27 @@ def get_order(id):
 @order_api_blueprint.route('/orders', methods=['POST'])
 @login_required
 def create_order():
-    data = request.get_json()
-    if not data:
-        return jsonify({'error': 'Invalid request data'}), 400
+    order_items = request.form.getlist('order_item')
+    if not order_items:
+        return jsonify({'error': 'Missing required fields'}), 400
 
-    orders = []
-    for order_data in data:
-        order_items = order_data.get('order_items')
-        if not order_items:
-            return jsonify({'error': 'Missing required fields'}), 400
+    try:
+        order = Order.create(id=uuid.uuid4(), created_at=datetime.utcnow(), order_items=order_items)
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
 
-        try:
-            order = Order.create(id=uuid.uuid4(), created_at=datetime.utcnow(), order_items=order_items)
-            orders.append(order)
-        except ValueError as e:
-            return jsonify({'error': str(e)}), 400
-
-    return jsonify([order.to_dict() for order in orders]), 201
+    return jsonify(order.to_dict()), 201
 
 
 @order_api_blueprint.route('/orders/<id>', methods=['PUT'])
-@login_required
 @admin_permission.require(http_exception=403)
+@login_required
 def update_order(id):
     order = Order.query.filter_by(id=id).first()
     if not order:
         return jsonify({'error': 'Order not found'}), 404
 
-    data = request.get_json()
-    if not data:
-        return jsonify({'error': 'Invalid request data'}), 400
-
-    order_items = data.get('order_items')
+    order_items = request.form.getlist('order_item')
     if not order_items:
         return jsonify({'error': 'Missing required fields'}), 400
 

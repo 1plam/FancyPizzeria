@@ -9,7 +9,6 @@ order_item_api_blueprint = Blueprint('order_item_api', __name__)
 
 
 @order_item_api_blueprint.route('/order-items', methods=['GET'])
-@login_required
 def get_order_items():
     order_items = OrderItem.query.all()
     order_items_dict = [item.to_dict() for item in order_items]
@@ -28,7 +27,6 @@ def get_order_item(id):
 
 @order_item_api_blueprint.route('/order-items', methods=['POST'])
 @login_required
-@admin_permission.require(http_exception=403)
 @validate_order_item
 def create_order_item():
     data = request.get_json()
@@ -47,7 +45,6 @@ def create_order_item():
 
 @order_item_api_blueprint.route('/order-items/<id>', methods=['PUT'])
 @login_required
-@admin_permission.require(http_exception=403)
 @validate_order_item
 def update_order_item(id):
     order_item = OrderItem.query.get(id)

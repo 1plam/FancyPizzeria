@@ -3,24 +3,36 @@
 <head>
     <script>
         (function(d) {
-          var config = {
-            kitId: 'jfo5nkt',
-            scriptTimeout: 3000,
-            async: true
-          },
-          h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+            let config = {
+                    kitId: 'jfo5nkt',
+                    scriptTimeout: 3000,
+                    async: true
+                },
+                h = d.documentElement, t = setTimeout(function () {
+                    h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+                }, config.scriptTimeout), tk = d.createElement("script"), f = false,
+                s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
 
     <script>
         (function(d) {
-        var config = {
-            kitId: 'jfo5nkt',
-            scriptTimeout: 3000,
-            async: true
-        },
-        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+            let config = {
+                    kitId: 'jfo5nkt',
+                    scriptTimeout: 3000,
+                    async: true
+                },
+                h = d.documentElement, t = setTimeout(function () {
+                    h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+                }, config.scriptTimeout), tk = d.createElement("script"), f = false,
+                s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
+    </script>
+    <script>
+        function removeItem(itemName) {
+            fetch(`/cart/${itemName.replace(' ', '-')}`, {method: 'DELETE'})
+                .then(() => window.location.href = '/payment');
+        }
     </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,7 +40,6 @@
     <link href="/static/css/output.css" rel="stylesheet">
     <title>M&L Payment</title>
 </head>
-
 <body>
     <div class="h-screen bg-gray-300">
         <div class="py-52">
@@ -39,40 +50,53 @@
                         <div class="col-span-2 p-5">
                             <h1 class="text-xl font-medium ">M&L Order Payment</h1>
                             <!--Order Item-->
-                            <div class="flex justify-between items-center mt-6 pt-6">
-                                <div class="flex  items-center">
-                                    <img src="../static/img/pm-pizza.png" width="60" class="rounded-full ">
-                                    <div class="flex flex-col ml-3">
-                                        <span class="md:text-md font-medium">Pepperoni Pizza</span>
-                                        <span class="text-xs font-light text-gray-400">#41551</span>
+                            <div class="cart-items">
+                                {% for item in session.get('cart_items', []) %}
+                                <div class="flex justify-between items-center mt-6 pt-6 cart-item">
+                                    <div class="flex items-center">
+                                        <img src="../static/img/pm-pizza.png" width="60" class="rounded-full">
+                                        <div class="flex flex-col ml-3">
+                                            <span class="md:text-md font-medium item-name">{{ item.name }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-center items-center">
+                                        <div class="pr-8">
+                                            <span class="text-xs font-medium item-price">{{ item.price|floatformat(2) }}$</span>
+                                        </div>
+                                        <div>
+                                            <a href="#" onclick="removeItem('{{ item.name }}')" class="remove-item">X</a>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex justify-center items-center">
-                                    <div class="pr-8 flex ">
-                                        <span class="font-semibold">-</span>
-                                        <input type="text" class="focus:outline-none bg-gray-100 border h-6 w-8 rounded text-sm px-2 mx-2" value="1">
-                                        <span class="font-semibold">+</span>
-                                    </div>
-                                    <div class="pr-8 ">
-                                        <span class="text-xs font-medium">$10.50</span>
-                                    </div>
-                                    <div>
-                                        <a class="">X</a>
-                                    </div>
-                                </div>
+                            {% endfor %}
                             </div>
                             <!--Order total price-->
-                            <div class="flex justify-between items-center mt-6 pt-6 border-t"> 
+                            <div class="flex justify-between items-center mt-6 pt-6 border-t">
                                 <div class="flex items-center">
-                                    <a href="/menu  " class="text-md  font-medium text-blue-500 hover:text-blue-600">Back to Order Menu</a>
+                                    <a href="/menu" class="text-md  font-medium text-blue-500 hover:text-blue-600">Back to Order Menu</a>
                                 </div>
-                                <div class="flex justify-center items-end">
-                                    <span class="text-sm font-medium text-gray-400 mr-1">Subtotal:</span>
-                                    <span class="text-lg font-bold text-gray-800 "> $10.50</span>
+                                <div class="cart-items-subtotal">
+                                  {% set subtotal = 0 %}
+                                  {% if session.get('cart_items') %}
+                                    {% for item in session.get('cart_items', []) %}
+                                      {% set subtotal = subtotal + item.price %}
+                                    {% endfor %}
+                                    <div class="cart-items-total">
+                                        <span id="subtotal" class="text-lg font-bold text-gray-800">Subtotal: {{ subtotal|floatformat(2) }}$</span>
+                                    </div>
+                                    <script>
+                                      let subtotal = 0;
+                                      const cartItems = {{ session.get('cart_items', [])|tojson }};
+                                      cartItems.forEach(item => {
+                                        subtotal += item.price;
+                                      });
+                                      document.getElementById('subtotal').textContent = `Subtotal: ${subtotal.toFixed(2)}$`;
+                                    </script>
+                                  {% endif %}
                                 </div>
                             </div>
-                            <!--Order Card Details-->
                         </div>
+                        <!--Order Card Details-->
                         <div class=" p-5 bg-gray-800 rounded overflow-visible">
                             <span class="text-xl font-medium text-gray-100 block pb-3">Card Details</span>
                             <span class="text-xs text-gray-400 ">Card Type</span>
@@ -113,10 +137,12 @@
                                 </div>
                                 <div class="">
                                     <label class="text-xs text-gray-400">CVV</label>
-                                    <input type="text" maxlength="3" class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4" placeholder="XXX">
+                                    <input type="te xt" maxlength="3" class="focus:outline-none w-full h-6 bg-gray-800 text-white placeholder-gray-300 text-sm border-b border-gray-600 py-4" placeholder="XXX">
                                 </div>
                             </div>
-                            <button class="h-12 w-full bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600">Check Out</button>
+                            <form method="POST" action="{{ url_for('cart_api_blueprint.checkout') }}">
+                                <input type="submit" value="Check Out" class="h-12 w-full bg-blue-500 rounded focus:outline-none text-white hover:bg-blue-600"{% if not session.get('cart_items') %} disabled{% endif %}>
+                            </form>
                         </div>
                     </div>
                </div>
