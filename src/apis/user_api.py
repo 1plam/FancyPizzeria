@@ -37,12 +37,12 @@ def create_user():
     password = request.form['password']
 
     if not [username, password]:
-        error_message = 'Invalid request data'
+        error_message = 'invalid request data'
         return render_template('signup.html', error_message=error_message)
 
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
-        error_message = 'Username already exists'
+        error_message = 'username already exists'
         return render_template('signup.html', error_message=error_message)
 
     user = User.create(username, password)
@@ -87,7 +87,7 @@ def login():
 
     user = User.query.filter_by(username=username).first()
     if user is None or not user.check_password(password):
-        error_message = 'Invalid credentials. Please check your login details and try again.'
+        error_message = 'invalid credentials. please check your login details and try again.'
         return render_template('login.html', error_message=error_message)
 
     login_user(user)
@@ -97,6 +97,7 @@ def login():
         return redirect('/kitchen')
 
     return redirect('/index')
+
 
 @user_api_blueprint.route('/logout', methods=['POST'])
 @login_required

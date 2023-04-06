@@ -27,7 +27,7 @@ def get_order():
 @login_required
 @admin_permission.require(http_exception=403)
 def get_order_by_id(id):
-    order = Order.query.filter_by(id=id).first()
+    order = Order.query.get(id)
     if not order:
         return jsonify({'error': 'Order not found'}), 404
     return jsonify(order.to_dict())
@@ -41,7 +41,7 @@ def create_order():
         return jsonify({'error': 'Missing required fields'}), 400
 
     try:
-        order = Order.create(id=uuid.uuid4(), created_at=datetime.utcnow(), order_items=order_items)
+        order = Order.create(id=str(uuid.uuid4()), created_at=datetime.utcnow(), order_items=order_items)
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
 
@@ -52,7 +52,7 @@ def create_order():
 @admin_permission.require(http_exception=403)
 @login_required
 def update_order(id):
-    order = Order.query.filter_by(id=id).first()
+    order = Order.query.get(id)
     if not order:
         return jsonify({'error': 'Order not found'}), 404
 
@@ -72,9 +72,9 @@ def update_order(id):
 @login_required
 @admin_permission.require(http_exception=403)
 def delete_order(id):
-    order = Order.query.filter_by(id=id).first()
+    order = Order.query.get(id)
     if not order:
         return jsonify({'error': 'Order not found'}), 404
 
     order.delete()
-    return jsonify({'message': 'Order deleted successfully'})
+    return '', 204

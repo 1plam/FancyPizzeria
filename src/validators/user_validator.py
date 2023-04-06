@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import jsonify, request
+from flask import jsonify, request, render_template
 
 from src.validators.abstractions import BaseValidator
 
@@ -9,9 +9,9 @@ def validate_user_data(http_verb):
     def decorator_validate_user_data(func):
         @wraps(func)
         def wrapper_validate_user_data(*args, **kwargs):
-            validation_error, _ = UserValidator(request.form, http_verb).validate()
+            validation_error = UserValidator(request.form, http_verb).validate()
             if validation_error:
-                return jsonify(validation_error), 400
+                return render_template('signup.html', error_message=validation_error)
 
             return func(*args, **kwargs)
 
@@ -30,30 +30,30 @@ class UserValidator(BaseValidator):
 
         if not all([username, password]):
             return {
-                'error': f'Missing required fields. Username: {username}, Password: {password}'}, 400
+                'error': f'missing required fields. Username: {username}, Password: {password}'}, 400
 
-        error, status_code = self.validate_username(username)
+        error = self.validate_username(username)
         if error:
-            return error, status_code
+            return error
 
-        error, status_code = self.validate_password(password)
+        error = self.validate_password(password)
         if error:
-            return error, status_code
+            return error
 
-        return None, None
+        return None
 
     def validate_update(self):
         username = self.data.get('username')
         password = self.data.get('password')
 
         if username is not None:
-            error, status_code = self.validate_username(username)
+            error = self.validate_username(username)
             if error:
-                return error, status_code
+                return error
 
         if password is not None:
-            error, status_code = self.validate_password(password)
+            error = self.validate_password(password)
             if error:
-                return error, status_code
+                return error
 
-        return None, None
+        return None

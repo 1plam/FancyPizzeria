@@ -1,10 +1,5 @@
 import re
-from datetime import datetime
-from dateutil.parser import parse
-from dateutil.relativedelta import relativedelta
 from abc import ABC, abstractmethod
-
-from flask import render_template
 
 
 class BaseValidator(ABC):
@@ -34,25 +29,25 @@ class BaseValidator(ABC):
     @staticmethod
     def validate_username(username):
         if not username:
-            error_message = 'Validation error: Username is required'
-            return render_template('signup.html', error_message=error_message)
+            error_message = 'username is required'
+            return error_message
 
         if len(username) < 4 or len(username) > 12:
-            error_message = 'Validation error: Username must be between 4 and 12 characters'
-            return render_template('signup.html', error_message=error_message)
+            error_message = 'username must be between 4 and 12 characters'
+            return error_message
 
-        return None, None
+        return None
 
     @staticmethod
     def validate_password(password):
         if not password:
-            error_message = 'Validation error: Password is required'
-            return render_template('signup.html', error_message=error_message)
+            error_message = 'password is required'
+            return error_message
 
         if not re.match(r'^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#%]*[!#%])[A-Za-z0-9!#%]{6,32}$', password):
-            error_message = 'Validation error: Password must contain at least one lowercase letter, one uppercase ' \
+            error_message = 'password must contain at least one lowercase letter, one uppercase ' \
                             'letter, one digit, and one special character (!, #, or %) and be between 6 and 32 ' \
                             'characters'
-            return render_template('signup.html', error_message=error_message)
+            return error_message
 
-        return None, None
+        return None

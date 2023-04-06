@@ -18,7 +18,7 @@ app = Flask(__name__, template_folder='templates', static_url_path="/static")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SESSION_FILE_DIR'] = '/Users/plam/tempdir' # !
+# app.config['SESSION_FILE_DIR'] = '/Users/plam/tempdir'
 app.config['SESSION_PERMANENT'] = False
 
 db.init_app(app)

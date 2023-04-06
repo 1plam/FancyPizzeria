@@ -29,17 +29,13 @@ def get_order_item(id):
 @login_required
 @validate_order_item
 def create_order_item():
-    data = request.get_json()
-    if not data:
-        return jsonify({'error': 'Invalid request data'}), 400
-
-    name = data.get('name')
-    price = data.get('price')
+    name = request.form.get('name')
+    price = request.form.get('price')
 
     if not all([name, price]):
         return jsonify({'error': 'Missing required fields'}), 400
 
-    order_item = OrderItem.create(name=name, description=data.get('description'), price=price)
+    order_item = OrderItem.create(name=name, description=request.form.get('description'), price=price)
     return jsonify(order_item.to_dict()), 201
 
 
@@ -51,11 +47,13 @@ def update_order_item(id):
     if not order_item:
         return jsonify({'error': 'OrderItem not found'}), 404
 
-    data = request.get_json()
-    if not data:
-        return jsonify({'error': 'Invalid request data'}), 400
+    name = request.form.get('name')
+    price = request.form.get('price')
 
-    order_item.update(name=data.get('name'), description=data.get('description'), price=data.get('price'))
+    if not all([name, price]):
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    order_item.update(name=name, description=request.form.get('description'), price=price)
     return jsonify(order_item.to_dict()), 200
 
 

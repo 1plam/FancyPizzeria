@@ -27,6 +27,19 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!=="complete"&&a!=="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
+    <script>
+        function addItemToCart(formId) {
+            document.getElementById(formId).submit();
+        }
+    </script>
+    <script>
+        setTimeout(function() {
+            let popup = document.getElementById("popup");
+            if (popup) {
+            popup.remove();
+            }
+        }, 2000);
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,6 +78,11 @@
                   </div>
             </div>
           </div>
+            {% if message %}
+              <div id="popup" class="popup">
+                <p>{{ message }}</p>
+              </div>
+            {% endif %}
         </div>
     </nav>
 <!--M&L Menu Content-->
@@ -86,11 +104,12 @@
                     <p class="cartoon text-sm font-medium">$7,99</p>
                 </div>
                 {% if current_user.is_authenticated %}
-                <a href="#" onclick="document.getElementById('add-to-cart-form-margherita').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                <a href="#" onclick="addItemToCart('add-to-cart-form-margherita'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
                 {% endif %}
                 </a>
+                <span id="notification"></span>
             </div>
             <form id="add-to-cart-form-margherita" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Margherita Pizza">
@@ -113,11 +132,12 @@
                     <p class="cartoon text-sm font-medium">$8,99</p>
                 </div>
                 {% if current_user.is_authenticated %}
-                <a href="#" onclick="document.getElementById('add-to-cart-form-pepperoni').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                <a href="#" onclick="addItemToCart('add-to-cart-form-pepperoni'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
                 {% endif %}
                 </a>
+                <span id="notification"></span>
             </div>
             <form id="add-to-cart-form-pepperoni" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Pepperoni Pizza">
@@ -140,11 +160,12 @@
                     <p class="cartoon text-sm font-medium">$8,99</p>
                 </div>
                 {% if current_user.is_authenticated %}
-                <a href="#" onclick="document.getElementById('add-to-cart-form-caprese').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                <a href="#" onclick="addItemToCart('add-to-cart-form-caprese'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
                 {% endif %}
                 </a>
+                <span id="notification"></span>
             </div>
             <form id="add-to-cart-form-caprese" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Caprese Pizza">
@@ -167,11 +188,12 @@
                     <p class="cartoon text-sm font-medium">$11,99</p>
                 </div>
                 {% if current_user.is_authenticated %}
-                <a href="#" onclick="document.getElementById('add-to-cart-form-mario-special').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                <a href="#" onclick="addItemToCart('add-to-cart-form-mario-special'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
                 {% endif %}
                 </a>
+                <span id="notification"></span>
             </div>
             <form id="add-to-cart-form-mario-special" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Mario Special Pizza">
@@ -194,11 +216,12 @@
                     <p class="cartoon text-sm font-medium">$11,99</p>
                 </div>
                 {% if current_user.is_authenticated %}
-                <a href="#" onclick="document.getElementById('add-to-cart-form-luigi-special').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                <a href="#" onclick="addItemToCart('add-to-cart-form-luigi-special'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
                 {% endif %}
                 </a>
+                <span id="notification"></span>
             </div>
             <form id="add-to-cart-form-luigi-special" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Luigi Special Pizza">
@@ -221,11 +244,12 @@
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
                 {% if current_user.is_authenticated %}
-                <a href="#" onclick="document.getElementById('add-to-cart-form-cola').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                <a href="#" onclick="addItemToCart('add-to-cart-form-cola'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
                 {% endif %}
                 </a>
+                <span id="notification"></span>
             </div>
             <form id="add-to-cart-form-cola" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Coca Cola">
@@ -248,11 +272,12 @@
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
                 {% if current_user.is_authenticated %}
-                <a href="#" onclick="document.getElementById('add-to-cart-form-fanta').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                <a href="#" onclick="addItemToCart('add-to-cart-form-fanta'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
                 {% endif %}
                 </a>
+                <span id="notification"></span>
             </div>
             <form id="add-to-cart-form-fanta" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Fanta">
@@ -275,11 +300,12 @@
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
                 {% if current_user.is_authenticated %}
-                <a href="#" onclick="document.getElementById('add-to-cart-form-sprite').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                <a href="#" onclick="addItemToCart('add-to-cart-form-sprite'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
                 {% endif %}
                 </a>
+                <span id="notification"></span>
             </div>
             <form id="add-to-cart-form-sprite" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Sprite">
