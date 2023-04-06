@@ -24,14 +24,13 @@ class OrderItem(db.Model):
             price=data['price']
         )
 
-    @classmethod
-    def to_dict(cls):
+    def to_dict(self):
         """Return a dictionary representation of the order item."""
         return {
-            'id': cls.id,
-            'name': cls.name,
-            'description': cls.description,
-            'price': cls.price
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'price': self.price
         }
 
     def __repr__(self):

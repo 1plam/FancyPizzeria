@@ -28,7 +28,13 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-
+    <script>
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            alert("Your account has been created!");
+            window.location.replace("/index");
+        }
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,9 +57,12 @@
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div class="flex space-x-4">
+                    {% if current_user.role == 'administrator' %}
+                    <a href="/kitchen" class="cartoon transition-all text-white hover:bg-gray-700 rounded-md px-3 py-2 text-sm font-medium bg-black">Kitchen Dashboard</a>
+                    {% endif %}
                     <a href="/index" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium">Home</a>
                     <a href="/menu" class="cartoon text-white hover:bg-black rounded-md px-3 py-2 text-sm font-medium">Menu</a>
-                    {% if current_user.is_authenticated and current_user.is_active and 'order_id' in session %}
+                    {% if current_user.role == 'customer' and 'order_id' in session %}
                         <a href="/orders" class="cartoon transition-all text-white hover:bg-blue-500 rounded-md px-3 py-2 text-sm font-medium">Order</a>
                     {% endif %}
                     {% if current_user.is_authenticated and current_user.is_active %}
@@ -78,7 +87,7 @@
                     <img class="mx-auto h-12 w-auto" src="../static/img/pizza.png" alt="M&L Logo">
                     <h2 class="cartoon mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">Create your own account</h2>
                   </div>
-                  <form class="mt-8 space-y-6" action="/users" method="POST" enctype="multipart/form-data">
+                  <form class="mt-8 space-y-6" action="/users" method="POST" enctype="multipart/form-data" onsubmit="handleFormSubmit(event)">
                     <input type="hidden" name="remember" value="true">
                     <div class="-space-y-px rounded-md shadow-sm">
                       <div>

@@ -2,6 +2,7 @@ from datetime import datetime
 from uuid import uuid4
 
 from flask import Blueprint, jsonify, request, session, redirect, render_template
+from flask_login import login_required
 
 from src.models import Order
 
@@ -11,12 +12,14 @@ CART_ITEMS_KEY = 'cart_items'
 
 
 @cart_api_blueprint.route('/cart', methods=['GET'])
+@login_required
 def get_cart_items():
     cart_items = session.get(CART_ITEMS_KEY, [])
     return jsonify(cart_items)
 
 
 @cart_api_blueprint.route('/cart', methods=['POST'])
+@login_required
 def add_to_cart():
     name = request.form.get('name')
     description = request.form.get('description')
@@ -35,6 +38,7 @@ def add_to_cart():
 
 
 @cart_api_blueprint.route('/cart/<item_name>', methods=['DELETE'])
+@login_required
 def remove_item_from_cart(item_name):
     item_name = item_name.replace('-', ' ')
     cart_items = session.get(CART_ITEMS_KEY, [])
@@ -47,6 +51,7 @@ def remove_item_from_cart(item_name):
 
 
 @cart_api_blueprint.route('/cart/checkout', methods=['POST'])
+@login_required
 def checkout():
     order_id = str(uuid4())
     order_items = session.get(CART_ITEMS_KEY, [])

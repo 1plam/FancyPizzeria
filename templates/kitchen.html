@@ -14,7 +14,6 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-
     <script>
         (function(d) {
             let config = {
@@ -28,11 +27,12 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/css/output.css" rel="stylesheet">
+    <link href="/static/css/input.css" rel="stylesheet">
+    <link href="/static/css/build.css" rel="stylesheet">
     <title>M&L Kitchen Dashboard</title>
 </head>
 <body>
@@ -42,19 +42,20 @@
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <a href="./index.html" class="cartoon text-white text-lg">M&L</a>
+              <a href="/index" class="cartoon text-white text-lg">M&L</a>
             </div>
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 <a href="/kitchen" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Dashboard</a>
-                <a href="/index" class="bg-red-600 hover:bg-red-500 text-white rounded-md px-3 py-2 text-sm font-medium">Exit</a>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="bg-red-600 hover:bg-red-500 text-white rounded-md px-3 py-2 text-sm font-medium">Exit</button>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
     </nav>
-  
     <header class="bg-white shadow">
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900">Kitchen Dashboard</h1>
@@ -64,83 +65,35 @@
     <main>
       <div class="mx-auto max-w-7xl py-6 grid grid-cols-2 gap-4 place-content-center">
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-           <!-- Order Block -->
-          <div class="p-3 bg-white shadow rounded-lg">
-            <h3 class="text-xs border-b pb-2 font-bold">Order #4132</h3>
-              <li>
-                Pizza
-              </li>
-              <li>
-                Coca Cola
-              </li>
-            <!-- Order Progress Buttons -->
-            <div class="border-t pt-2 flex justify-between">
-              <a href="#" class="hover:bg-blue-400 items-center rounded-md bg-blue-500 text-white text-sm font-medium px-5 py-1 shadow-sm">
-                Start
-              </a>
-              <a href="#" class="hover:bg-red-400 items-center rounded-md bg-red-500 text-white text-sm font-medium px-5 py-1 shadow-sm">
-                Finish
-              </a>
+          {% for order in orders %}
+            <!-- Order Block -->
+            <div class="p-3 bg-white shadow rounded-lg">
+              <h3 class="text-xs border-b pb-2 font-bold">Order #{{ order.id }}</h3>
+              {% for item in order.order_items %}
+              <li>{{ item.name }}</li>
+              {% endfor %}
+              <!-- Order Progress Buttons -->
+              <div class="border-t pt-2 flex justify-between">
+                {% if order.state == OrderState.SUBMITTED %}
+                <form action="{{ url_for('kitchen_api_blueprint.update_order', id=order.id) }}" method="POST">
+                  <input type="hidden" name="_method" value="POST">
+                  <input type="hidden" name="state" value='PENDING'>
+                  <button class="hover:bg-blue-400 items-center rounded-md bg-blue-500 text-white text-sm font-medium px-5 py-1 shadow-sm"
+                    type="submit">Start</button>
+                </form>
+                {% elif order.state == OrderState.PENDING %}
+                <form action="{{ url_for('kitchen_api_blueprint.update_order', id=order.id) }}" method="POST">
+                  <input type="hidden" name="_method" value="POST">
+                  <input type="hidden" name="state" value='COMPLETED'>
+                  <button class="hover:bg-red-400 items-center rounded-md bg-red-500 text-white text-sm font-medium px-5 py-1 shadow-sm"
+                    type="submit">Finish</button>
+                </form>
+                {% else %}
+                <span class="text-sm font-medium px-5 py-1">{{ order.state }}</span>
+                {% endif %}
+              </div>
             </div>
-          </div>
-          <!-- Next Order Block -->
-          <div class="p-3 bg-white shadow rounded-lg">
-            <h3 class="text-xs border-b pb-2 font-bold">Order #4132</h3>
-              <li>
-                Pizza
-              </li>
-              <li>
-                Coca Cola
-              </li>
-            <!-- Order Progress Buttons -->
-            <div class="border-t pt-2 flex justify-between">
-              <a href="#" class="hover:bg-blue-400 items-center rounded-md bg-blue-500 text-white text-sm font-medium px-5 py-1 shadow-sm">
-                Start
-              </a>
-              <a href="#" class="hover:bg-red-400 items-center rounded-md bg-red-500 text-white text-sm font-medium px-5 py-1 shadow-sm">
-                Finish
-              </a>
-            </div>
-          </div>
-          <!-- Next Order Block -->
-          <div class="p-3 bg-white shadow rounded-lg">
-            <h3 class="text-xs border-b pb-2 font-bold">Order #4132</h3>
-              <li>
-                Pizza
-              </li>
-              <li>
-                Coca Cola
-              </li>
-            <!-- Order Progress Buttons -->
-            <div class="border-t pt-2 flex justify-between">
-              <a href="#" class="hover:bg-blue-400 items-center rounded-md bg-blue-500 text-white text-sm font-medium px-5 py-1 shadow-sm">
-                Start
-              </a>
-              <a href="#" class="hover:bg-red-400 items-center rounded-md bg-red-500 text-white text-sm font-medium px-5 py-1 shadow-sm">
-                Finish
-              </a>
-            </div>
-          </div>
-          <!-- Next Order Block -->
-          <div class="p-3 bg-white shadow rounded-lg">
-            <h3 class="text-xs border-b pb-2 font-bold">Order #4132</h3>
-              <li>
-                Pizza
-              </li>
-              <li>
-                Coca Cola
-              </li>
-            <!-- Order Progress Buttons -->
-            <div class="border-t pt-2 flex justify-between">
-              <a href="#" class="hover:bg-blue-400 items-center rounded-md bg-blue-500 text-white text-sm font-medium px-5 py-1 shadow-sm">
-                Start
-              </a>
-              <a href="#" class="hover:bg-red-400 items-center rounded-md bg-red-500 text-white text-sm font-medium px-5 py-1 shadow-sm">
-                Finish
-              </a>
-            </div>
-          </div>
-          <!-- Next Order Block -->
+            {% endfor %}
         </div>
         <!-- Smart Oven Block -->
         <div class="border-l-2 pl-4">
