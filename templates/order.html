@@ -70,16 +70,16 @@
 <!--M&L Hero Center Collumns-->
     <div class="h-screen flex flex-col justify-center items-center ">
         <div class="grid grid-cols-2 gap-4 place-content-center">
-            <div>
-                <div class="col-span-2 p-5">
-                <h1 class="text-xl font-medium">Your last order:</h1>
+            <div class="pl-5">
+                <div class="col-span-2 p-5 bg-white rounded-xl shadow-lg">
+                    <h1 class="text-xl font-medium ">Your last order</h1>
+                    <!--Order Item Start-->
                     {% if order %}
                         {% set total_price = 0 %}
                         {% for order_item in order.order_items %}
                             {% set total_price = total_price + order_item.price %}
                             <div class="flex justify-between items-center mt-6 pt-6">
                                 <div class="flex items-center">
-                                    <img src="{{ order_item.image_url }}" width="60" class="rounded-full">
                                     <div class="flex flex-col ml-3">
                                         <span class="md:text-md font-medium">{{ order_item.name }}</span>
                                         <span class="text-xs font-light text-gray-400">#{{ order.id }}</span>
@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="flex justify-center items-center">
                                     <div class="pr-8">
-                                        <span class="text-xs font-medium">{{ order_item.price }}$</span>
+                                        <span class="font-semibold text-xs">{{ order_item.price }}$</span>
                                     </div>
                                     <div>
                                         <i class="fa fa-close text-xs font-medium"></i>
