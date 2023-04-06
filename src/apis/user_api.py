@@ -45,8 +45,8 @@ def create_user():
         error_message = 'username already exists'
         return render_template('signup.html', error_message=error_message)
 
-    user = User.create(username, password)
-    return jsonify(user.to_dict()), 201
+    User.create(username, password)
+    return redirect('/login')
 
 
 @user_api_blueprint.route('/users/<id>', methods=['PUT'])
