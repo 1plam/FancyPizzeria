@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, session, redirect, flash
+from flask import Blueprint, jsonify, request, session, redirect, flash, render_template
 from flask_login import login_user, logout_user, login_required
 from flask_principal import Permission, RoleNeed
 
@@ -37,11 +37,13 @@ def create_user():
     password = request.form['password']
 
     if not [username, password]:
-        return jsonify({'error': 'Invalid request data'}), 400
+        error_message = 'Invalid request data'
+        return render_template('signup.html', error_message=error_message)
 
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
-        return jsonify({'error': 'Username already exists'}), 409
+        error_message = 'Username already exists'
+        return render_template('signup.html', error_message=error_message)
 
     user = User.create(username, password)
     return jsonify(user.to_dict()), 201
@@ -85,17 +87,16 @@ def login():
 
     user = User.query.filter_by(username=username).first()
     if user is None or not user.check_password(password):
-        flash('Please check your login details and try again.')
-        return redirect("/login")
+        error_message = 'Invalid credentials. Please check your login details and try again.'
+        return render_template('login.html', error_message=error_message)
 
     login_user(user)
 
     if user.role == 'administrator':
         session['admin'] = True
-        return redirect("/kitchen")
+        return redirect('/kitchen')
 
-    return redirect("/index")
-
+    return redirect('/index')
 
 @user_api_blueprint.route('/logout', methods=['POST'])
 @login_required

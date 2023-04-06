@@ -45,7 +45,6 @@ class UserValidator(BaseValidator):
     def validate_update(self):
         username = self.data.get('username')
         password = self.data.get('password')
-        date_of_birth = self.data.get('date_of_birth')
 
         if username is not None:
             error, status_code = self.validate_username(username)

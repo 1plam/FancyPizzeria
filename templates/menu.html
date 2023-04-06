@@ -68,30 +68,29 @@
         </div>
     </nav>
 <!--M&L Menu Content-->
-<div>
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-    <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-        <!--M&L Start of product-->
-        <div class="group relative">
+        <div>
+            <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+            <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                <!--M&L Start of product-->
+                <div class="group relative">
             <div class="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-stone-100 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <img src="../static/img/pizza_menu/margherita.png" class="h-full w-full object-cover object-center" alt="">
             </div>
             <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
                 <div class="mt-4 flex justify-between">
                     <div>
-                    <h3 class="cartoon text-sm text-black">
-                        {% if current_user.is_authenticated %}
-                            <a href="#" onclick="document.getElementById('add-to-cart-form-margherita').submit(); return false;">
-                        {% else %}
-                            <a href="/login">
-                        {% endif %}
-                            <span aria-hidden="true" class="cartoon absolute inset-0">Margherita Pizza</span>
-                        </a>
-                    </h3>
+                        <h3 class="cartoon text-sm text-black">
+                            <span aria-hidden="true" class="cartoon inset-0">Margherita Pizza</span>
+                        </h3>
                     </div>
                     <p class="cartoon text-sm font-medium">$7,99</p>
                 </div>
-                <p class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" onclick="document.getElementById('add-to-cart-form-margherita').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                {% else %}
+                <a href="/login">
+                {% endif %}
+                </a>
             </div>
             <form id="add-to-cart-form-margherita" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Margherita Pizza">
@@ -107,19 +106,18 @@
             <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
                 <div class="mt-4 flex justify-between">
                     <div>
-                    <h3 class="cartoon text-sm text-black">
-                        {% if current_user.is_authenticated %}
-                            <a href="#" onclick="document.getElementById('add-to-cart-form-pepperoni').submit(); return false;">
-                        {% else %}
-                            <a href="/login">
-                        {% endif %}
-                            <span aria-hidden="true" class="cartoon absolute inset-0">Pepperoni Pizza</span>
-                        </a>
-                    </h3>
+                        <h3 class="cartoon text-sm text-black">
+                            <span aria-hidden="true" class="cartoon inset-0">Pepperoni Pizza</span>
+                        </h3>
                     </div>
                     <p class="cartoon text-sm font-medium">$8,99</p>
                 </div>
-                <p class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" onclick="document.getElementById('add-to-cart-form-pepperoni').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                {% else %}
+                <a href="/login">
+                {% endif %}
+                </a>
             </div>
             <form id="add-to-cart-form-pepperoni" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Pepperoni Pizza">
@@ -135,19 +133,18 @@
             <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
                 <div class="mt-4 flex justify-between">
                     <div>
-                    <h3 class="cartoon text-sm text-black">
-                        {% if current_user.is_authenticated %}
-                            <a href="#" onclick="document.getElementById('add-to-cart-form-caprese').submit(); return false;">
-                        {% else %}
-                            <a href="/login">
-                        {% endif %}
-                            <span aria-hidden="true" class="cartoon absolute inset-0">Caprese Pizza</span>
-                        </a>
-                    </h3>
+                        <h3 class="cartoon text-sm text-black">
+                            <span aria-hidden="true" class="cartoon inset-0">Caprese Pizza</span>
+                        </h3>
                     </div>
                     <p class="cartoon text-sm font-medium">$8,99</p>
                 </div>
-                <p class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" onclick="document.getElementById('add-to-cart-form-caprese').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                {% else %}
+                <a href="/login">
+                {% endif %}
+                </a>
             </div>
             <form id="add-to-cart-form-caprese" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Caprese Pizza">
@@ -163,19 +160,18 @@
             <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
                 <div class="mt-4 flex justify-between">
                     <div>
-                    <h3 class="cartoon text-sm text-black">
-                        {% if current_user.is_authenticated %}
-                            <a href="#" onclick="document.getElementById('add-to-cart-form-mario-special').submit(); return false;">
-                        {% else %}
-                            <a href="/login">
-                        {% endif %}
-                            <span aria-hidden="true" class="cartoon absolute inset-0">Mario's Special</span>
-                        </a>
-                    </h3>
+                        <h3 class="cartoon text-sm text-black">
+                            <span aria-hidden="true" class="cartoon inset-0">Mario's Special Pizza</span>
+                        </h3>
                     </div>
                     <p class="cartoon text-sm font-medium">$11,99</p>
                 </div>
-                <p class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" onclick="document.getElementById('add-to-cart-form-mario-special').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                {% else %}
+                <a href="/login">
+                {% endif %}
+                </a>
             </div>
             <form id="add-to-cart-form-mario-special" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Mario Special Pizza">
@@ -191,19 +187,18 @@
             <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
                 <div class="mt-4 flex justify-between">
                     <div>
-                    <h3 class="cartoon text-sm text-black">
-                        {% if current_user.is_authenticated %}
-                            <a href="#" onclick="document.getElementById('add-to-cart-form-luigi-special').submit(); return false;">
-                        {% else %}
-                            <a href="/login">
-                        {% endif %}
-                            <span aria-hidden="true" class="cartoon absolute inset-0">Luigi's Special</span>
-                        </a>
-                    </h3>
+                        <h3 class="cartoon text-sm text-black">
+                            <span aria-hidden="true" class="cartoon inset-0">Luigi's Special Pizza</span>
+                        </h3>
                     </div>
                     <p class="cartoon text-sm font-medium">$11,99</p>
                 </div>
-                <p class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" onclick="document.getElementById('add-to-cart-form-luigi-special').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                {% else %}
+                <a href="/login">
+                {% endif %}
+                </a>
             </div>
             <form id="add-to-cart-form-luigi-special" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Luigi Special Pizza">
@@ -219,19 +214,18 @@
             <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
                 <div class="mt-4 flex justify-between">
                     <div>
-                    <h3 class="cartoon text-sm text-black">
-                        {% if current_user.is_authenticated %}
-                            <a href="#" onclick="document.getElementById('add-to-cart-form-cola').submit(); return false;">
-                        {% else %}
-                            <a href="/login">
-                        {% endif %}
-                            <span aria-hidden="true" class="cartoon absolute inset-0">Coca Cola</span>
-                        </a>
-                    </h3>
+                        <h3 class="cartoon text-sm text-black">
+                            <span aria-hidden="true" class="cartoon inset-0">Coca Cola</span>
+                        </h3>
                     </div>
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
-                <p class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" onclick="document.getElementById('add-to-cart-form-cola').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                {% else %}
+                <a href="/login">
+                {% endif %}
+                </a>
             </div>
             <form id="add-to-cart-form-cola" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Coca Cola">
@@ -244,22 +238,21 @@
             <div class="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-stone-100 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <img src="../static/img/drink_menu/fanta.png" class="h-full w-full object-cover object-center" alt="">
             </div>
-            <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
+                <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
                 <div class="mt-4 flex justify-between">
                     <div>
-                    <h3 class="cartoon text-sm text-black">
-                        {% if current_user.is_authenticated %}
-                            <a href="#" onclick="document.getElementById('add-to-cart-form-fanta').submit(); return false;">
-                        {% else %}
-                            <a href="/login">
-                        {% endif %}
-                            <span aria-hidden="true" class="cartoon absolute inset-0">Fanta</span>
-                        </a>
-                    </h3>
+                        <h3 class="cartoon text-sm text-black">
+                            <span aria-hidden="true" class="cartoon inset-0">Fanta</span>
+                        </h3>
                     </div>
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
-                <p class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" onclick="document.getElementById('add-to-cart-form-fanta').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                {% else %}
+                <a href="/login">
+                {% endif %}
+                </a>
             </div>
             <form id="add-to-cart-form-fanta" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Fanta">
@@ -272,22 +265,21 @@
             <div class="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-stone-100 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <img src="../static/img/drink_menu/sprite.png" class="h-full w-full object-cover object-center" alt="">
             </div>
-            <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
+                <div class="bg-stone-100 p-1 rounded-bl-md rounded-br-md group-hover:opacity-75">
                 <div class="mt-4 flex justify-between">
                     <div>
-                    <h3 class="cartoon text-sm text-black">
-                        {% if current_user.is_authenticated %}
-                            <a href="#" onclick="document.getElementById('add-to-cart-form-sprite').submit(); return false;">
-                        {% else %}
-                            <a href="/login">
-                        {% endif %}
-                            <span aria-hidden="true" class="cartoon absolute inset-0">Sprite</span>
-                        </a>
-                    </h3>
+                        <h3 class="cartoon text-sm text-black">
+                            <span aria-hidden="true" class="cartoon inset-0">Sprite</span>
+                        </h3>
                     </div>
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
-                <p class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</p>
+                {% if current_user.is_authenticated %}
+                <a href="#" onclick="document.getElementById('add-to-cart-form-sprite').submit(); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
+                {% else %}
+                <a href="/login">
+                {% endif %}
+                </a>
             </div>
             <form id="add-to-cart-form-sprite" action="{{ url_for('cart_api_blueprint.add_to_cart') }}" method="POST">
                 <input type="hidden" name="name" value="Sprite">

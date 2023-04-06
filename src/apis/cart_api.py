@@ -31,6 +31,11 @@ def add_to_cart():
     return jsonify(cart_items), 200
 
 
+@cart_api_blueprint.route('/cart', methods=['DELETE'])
+def clear_cart():
+    return 404  # TODO
+
+
 @cart_api_blueprint.route('/cart/<item_name>', methods=['DELETE'])
 def remove_item_from_cart(item_name):
     item_name = item_name.replace('-', ' ')
