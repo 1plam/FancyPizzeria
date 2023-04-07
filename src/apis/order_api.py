@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, request, render_template, session
 from flask_login import login_required
 
 from src.apis.user_api import admin_permission
-from src.models import Order
+from src.models import Order, OrderState
 
 order_api_blueprint = Blueprint('order_api_blueprint', __name__)
 
@@ -24,8 +24,8 @@ def get_order():
 
 
 @order_api_blueprint.route('/orders/<id>', methods=['GET'])
-@login_required
-@admin_permission.require(http_exception=403)
+# @login_required
+# @admin_permission.require(http_exception=403)
 def get_order_by_id(id):
     order = Order.query.get(id)
     if not order:
@@ -66,6 +66,23 @@ def update_order(id):
         return jsonify({'error': str(e)}), 400
 
     return jsonify(order.to_dict())
+
+
+@order_api_blueprint.route('/orders/<id>', methods=['PATCH'])
+def update_order_state(id):
+    order = Order.query.get(id)
+    if not order:
+        return jsonify({'error': 'Order not found'}), 404
+
+    order_state = request.json.get('state')
+    if not order_state:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    try:
+        order.update_state(OrderState(order_state))
+        return jsonify({'success': f'Order {id} state updated to {order_state}'}), 200
+    except ValueError:
+        return jsonify({'error': f'Invalid order state: {order_state}'}), 400
 
 
 @order_api_blueprint.route('/orders/<id>', methods=['DELETE'])

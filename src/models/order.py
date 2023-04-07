@@ -20,13 +20,13 @@ class Order(db.Model):
         return {
             'id': self.id,
             'created_at': self.created_at,
-            'state': self.state,
+            'state': str(self.state),
             'order_items': [item.to_dict() for item in self.order_items]
         }
 
     def __repr__(self):
         """Return a string representation of the order."""
-        return f'<Order id={self.id} created_at={self.created_at} state={self.state} order_items={self.order_items}>'
+        return f'<Order id={self.id} created_at={self.created_at} state={str(self.state)} order_items={self.order_items}>'
 
     @staticmethod
     def create(id, created_at, order_items, state=OrderState.SUBMITTED):
@@ -67,6 +67,14 @@ class Order(db.Model):
             order_item.order = self
             self.order_items.append(order_item)
 
+        db.session.commit()
+
+    def update_state(self, new_state):
+        """Update the order state."""
+        if not isinstance(new_state, OrderState):
+            raise ValueError(f"Invalid order state: {new_state}")
+
+        self.state = new_state.value
         db.session.commit()
 
     def save(self):

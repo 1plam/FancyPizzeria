@@ -4,14 +4,15 @@ from flask_login import login_required
 from src.apis.user_api import admin_permission
 from src.models import Order, OrderItem, OrderState
 
-
 kitchen_api_blueprint = Blueprint('kitchen_api_blueprint', __name__)
+oven_data = []
 
 
-@kitchen_api_blueprint.route('/kitchen', methods=['GET'])
-@login_required
-@admin_permission.require(http_exception=403)
-def get_orders():
+@kitchen_api_blueprint.route('/kitchen', methods=['GET', 'POST'])
+# @login_required
+# @admin_permission.require(http_exception=403)
+def get_kitchen_data():
+    global oven_data
     orders = Order.query.all()
     order_list = []
     for order in orders:
@@ -22,7 +23,12 @@ def get_orders():
         order_dict = order.to_dict()
         order_dict['order_items'] = item_list
         order_list.append(order_dict)
-    return render_template('kitchen.html', orders=order_list, OrderState=OrderState)
+
+    if request.method == 'POST':
+        oven_data = request.json
+        return 'OK', 200
+
+    return render_template('kitchen.html', oven_data=[oven_data], orders=order_list, OrderState=OrderState)
 
 
 @kitchen_api_blueprint.route('/kitchen/<id>', methods=['POST'])
