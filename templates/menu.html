@@ -106,7 +106,7 @@
                     </div>
                     <p class="cartoon text-sm font-medium">$7,99</p>
                 </div>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.role == 'customer' %}
                 <a href="#" onclick="addItemToCart('add-to-cart-form-margherita'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
@@ -134,7 +134,7 @@
                     </div>
                     <p class="cartoon text-sm font-medium">$8,99</p>
                 </div>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.role == 'customer' %}
                 <a href="#" onclick="addItemToCart('add-to-cart-form-pepperoni'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
@@ -162,7 +162,7 @@
                     </div>
                     <p class="cartoon text-sm font-medium">$8,99</p>
                 </div>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.role == 'customer' %}
                 <a href="#" onclick="addItemToCart('add-to-cart-form-caprese'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
@@ -190,7 +190,7 @@
                     </div>
                     <p class="cartoon text-sm font-medium">$11,99</p>
                 </div>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.role == 'customer' %}
                 <a href="#" onclick="addItemToCart('add-to-cart-form-mario-special'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
@@ -218,7 +218,7 @@
                     </div>
                     <p class="cartoon text-sm font-medium">$11,99</p>
                 </div>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.role == 'customer' %}
                 <a href="#" onclick="addItemToCart('add-to-cart-form-luigi-special'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
@@ -246,7 +246,7 @@
                     </div>
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.role == 'customer' %}
                 <a href="#" onclick="addItemToCart('add-to-cart-form-cola'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
@@ -274,7 +274,7 @@
                     </div>
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.role == 'customer' %}
                 <a href="#" onclick="addItemToCart('add-to-cart-form-fanta'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">
@@ -302,7 +302,7 @@
                     </div>
                     <p class="cartoon text-sm font-medium">$2,99</p>
                 </div>
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.role == 'customer' %}
                 <a href="#" onclick="addItemToCart('add-to-cart-form-sprite'); return false;" class="type text-lg grid place-content-center py-2" id="select-pizza">SELECT</a>
                 {% else %}
                 <a href="/login">

@@ -1,23 +1,10 @@
-import json
 import logging
 import time
-from enum import Enum
-import requests
 
+import requests
 from fhict_cb_01.CustomPymata4 import CustomPymata4
 
-
-class OrderState(Enum):
-    SUBMITTED = "OrderState.SUBMITTED"
-    IN_PROGRESS = "OrderState.IN_PROGRESS"
-    COMPLETED = "OrderState.COMPLETED"
-
-
-class OrderStateEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, OrderState):
-            return str(obj)
-        return json.JSONEncoder.default(self, obj)
+from oven.models import OrderState
 
 
 class SmartOven:
@@ -34,23 +21,38 @@ class SmartOven:
 
         self.board.displayOn()
 
+    def get_valid_order_id(self):
+        while True:
+            order_id = input("Enter order id to proceed: ")
+            if self.check_order_exists(order_id):
+                return order_id
+            print("Order does not exist or is not in SUBMITTED state.")
+
     def check_order_exists(self, order_id):
         response = requests.get(f"{self.ORDERS_URL}/{order_id}")
         if response.status_code == 200:
-            order_state = OrderState(response.json()['state'])
-            if order_state == OrderState.SUBMITTED:
-                return True
-        logging.info("Order does not exist in the database.")
+            order_state = response.json().get('state')
+            logging.info(f'Order with id {order_id} has state {order_state}.')
+            return order_state == 'OrderState.SUBMITTED'
+
+        logging.info(f"Order with id {order_id} does not exist in the database.")
         return False
 
-    # def update_order_state(self, order_id, state):
-    #     response = requests.patch(f"{self.ORDERS_URL}/{order_id}", json={"state": state}, cls=OrderStateEncoder)
-    #     if response.status_code == 200:
-    #         logging.info(f"Order {order_id} state updated successfully to {state}.")
-    #     logging.error(f"Failed to update the order state. {response.text}")
+    def update_order_state(self, order_id, new_state):
+        payload = {'state': new_state}
+        response = requests.patch(f"{self.ORDERS_URL}/{order_id}", json=payload)
+        if response.status_code == 200:
+            logging.info(f"Order with id {order_id} has been updated to {new_state} state.")
+            return True
+
+        logging.info(f"Failed to update order with id {order_id}.")
+        return False
 
     def start_timer(self, order_id):
-        for remaining_time in range(10, 0, -1):
+        global oven_data
+        self.update_order_state(order_id, OrderState.PENDING)
+
+        for remaining_time in reversed(range(0, 10)):
             self.board.displayShow(remaining_time)
             self.board.digital_pin_write(self.LED_PINS[3], 1)
 
@@ -61,43 +63,37 @@ class SmartOven:
             }
             requests.post(self.UPLOAD_URL, json=oven_data)
 
-            level, time_stamp = self.board.digital_read(self.BUTTON_PIN)
+            level, _ = self.board.digital_read(self.BUTTON_PIN)
             if level == 0:
                 self.board.digital_pin_write(self.LED_PINS[3], 0)
                 return False
 
             time.sleep(1)
 
-        oven_data = {
-            "order_number": order_id,
-            "time_left": 0,
-            "oven_status": "Done"
-        }
+        oven_data["oven_status"] = "Done"
         requests.post(self.UPLOAD_URL, json=oven_data)
 
         self.board.digital_pin_write(self.LED_PINS[3], 0)
         self.board.displayShow(0)
 
-        # self.update_order_state(order_id, OrderState.COMPLETED)
+        self.update_order_state(order_id, OrderState.COMPLETED)
         return True
 
     def cook_pizza(self):
         self.board.digital_pin_write(self.LED_PINS[1], 1)
 
         while True:
-            level, time_stamp = self.board.digital_read(self.BUTTON_PIN)
+            level, _ = self.board.digital_read(self.BUTTON_PIN)
             if level == 0:
                 break
             time.sleep(0.1)
 
         self.board.digital_pin_write(self.LED_PINS[1], 0)
 
-        order_id = input("Enter order id to proceed: ")
-        while not self.check_order_exists(order_id):
-            order_id = input("Try again. Enter order id to proceed: ")
-
-        if not self.start_timer(order_id):
-            logging.info("Timer cancelled.")
+        order_id = self.get_valid_order_id()
+        if order_id:
+            if not self.start_timer(order_id):
+                logging.info("Timer cancelled.")
 
     def run(self):
         while True:
