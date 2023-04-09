@@ -27,25 +27,14 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!=="complete"&&a!=="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-    <script>
-        function addItemToCart(formId) {
-            document.getElementById(formId).submit();
-        }
-    </script>
-    <script>
-        setTimeout(function() {
-            let popup = document.getElementById("popup");
-            if (popup) {
-            popup.remove();
-            }
-        }, 2000);
-    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/css/output.css" rel="stylesheet">
     <link href="/static/css/build.css" rel="stylesheet">
     <link href="/static/css/input.css" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/menu/addItemToCart.js') }}"></script>
     <title>M&L Menu</title>
 </head>
 

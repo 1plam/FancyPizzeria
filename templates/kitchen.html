@@ -27,34 +27,14 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-    <script>
-      let autorefreshEnabled = false;
-      function toggleAutorefresh() {
-        autorefreshEnabled = !autorefreshEnabled;
-        if (autorefreshEnabled) {
-          localStorage.setItem("autorefreshEnabled", "true");
-        } else {
-          localStorage.removeItem("autorefreshEnabled");
-        }
-      }
-
-      let storedAutorefreshEnabled = localStorage.getItem("autorefreshEnabled");
-      if (storedAutorefreshEnabled === "true") {
-        autorefreshEnabled = true;
-      }
-
-      setInterval(function() {
-        if (autorefreshEnabled) {
-          location.reload();
-        }
-      }, 400);
-    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/css/output.css" rel="stylesheet">
     <link href="/static/css/input.css" rel="stylesheet">
     <link href="/static/css/build.css" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/autorefresh.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/kitchen/deleteOrder.js') }}"></script>
     <title>M&L Kitchen Dashboard</title>
 </head>
 <body>
@@ -70,7 +50,7 @@
               <div class="ml-10 flex items-baseline space-x-4">
                 <a href="/kitchen" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Dashboard</a>
                 <button onclick="toggleAutorefresh()" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium">Toggle Autorefresh</button>
-                  <form action="/logout" method="POST">
+                <form action="/logout" method="POST">
                     <button type="submit" class="bg-red-600 hover:bg-red-500 text-white rounded-md px-3 py-2 text-sm font-medium">Exit</button>
                 </form>
               </div>
@@ -91,7 +71,19 @@
           {% for order in orders %}
             <!-- Order Block -->
             <div class="p-3 bg-white shadow rounded-lg">
-              <h3 class="text-xs border-b pb-2 font-bold">Order #{{ order.id }}</h3>
+                <h3 class="text-xs border-b pb-2 font-bold flex items-center justify-between">Order #{{ order.id }}
+                    <div class="flex-grow"></div>
+                    <form id="delete-order-form-{{ order.id }}" method="POST" action="/kitchen/{{ order.id }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="text-red-500 cursor-pointer hover:text-red-700">X</button>
+                    </form>
+                    <script>
+                        document.getElementById('delete-order-form-{{ order.id }}').addEventListener('submit', function(event) {
+                          event.preventDefault();
+                          deleteOrder('{{ order.id }}');
+                        });
+                    </script>
+                </h3>
               {% for item in order.order_items %}
               <li>{{ item.name }}</li>
               {% endfor %}

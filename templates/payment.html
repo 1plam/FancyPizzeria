@@ -27,16 +27,11 @@
                 s = d.getElementsByTagName("script")[0], a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
         })(document);
     </script>
-    <script>
-        function removeItem(itemName) {
-            fetch(`/cart/${itemName.replace(' ', '-')}`, {method: 'DELETE'})
-                .then(() => window.location.href = '/payment');
-        }
-    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../static/css/output.css" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/payment/removeItemFromCart.js') }}"></script>
     <title>M&L Payment</title>
 </head>
 

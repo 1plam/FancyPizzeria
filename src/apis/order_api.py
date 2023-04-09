@@ -5,6 +5,7 @@ from flask import Blueprint, jsonify, request, render_template, session
 from flask_login import login_required
 
 from src.apis.user_api import admin_permission
+from src.context import db
 from src.models import Order, OrderState
 
 order_api_blueprint = Blueprint('order_api_blueprint', __name__)
@@ -94,4 +95,4 @@ def delete_order(id):
         return jsonify({'error': 'Order not found'}), 404
 
     order.delete()
-    return '', 204
+    return jsonify({'success': f'Order with ID: {id} was deleted successfully'}), 200

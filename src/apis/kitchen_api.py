@@ -9,7 +9,7 @@ oven_data = []
 
 
 @kitchen_api_blueprint.route('/kitchen', methods=['GET', 'POST'])
-# @login_required
+@login_required
 # @admin_permission.require(http_exception=403)
 def get_kitchen_data():
     global oven_data
@@ -44,3 +44,13 @@ def update_order(id):
 
     order.save()
     return jsonify({'message': f'Order updated successfully'})
+
+
+@kitchen_api_blueprint.route('/kitchen/<id>', methods=['DELETE'])
+def delete_order(id):
+    order = Order.query.get(id)
+    if not order:
+        return jsonify({'error': 'Order not found'}), 404
+
+    order.delete()
+    return jsonify({'success': f'Order {id} was deleted successfully'}), 200

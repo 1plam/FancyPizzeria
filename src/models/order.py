@@ -78,6 +78,7 @@ class Order(db.Model):
         db.session.commit()
 
     def save(self):
+        """Save the changes in order."""
         db.session.add(self)
         db.session.commit()
 
