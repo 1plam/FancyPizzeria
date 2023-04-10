@@ -9,8 +9,6 @@ oven_data = []
 
 
 @kitchen_api_blueprint.route('/kitchen', methods=['GET', 'POST'])
-@login_required
-# @admin_permission.require(http_exception=403)
 def get_kitchen_data():
     global oven_data
     orders = Order.query.all()

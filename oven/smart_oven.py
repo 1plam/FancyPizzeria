@@ -70,6 +70,7 @@ class SmartOven:
 
             time.sleep(1)
 
+        oven_data["order_number"] = "None"
         oven_data["oven_status"] = "Done"
         requests.post(self.UPLOAD_URL, json=oven_data)
 
