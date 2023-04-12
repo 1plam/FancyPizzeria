@@ -76,7 +76,7 @@
                     <form id="delete-order-form-{{ order.id }}" method="POST" action="/kitchen/{{ order.id }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="text-red-500 cursor-pointer hover:text-red-700">X</button>
-                    </form>
+                        </form>
                     <script>
                         document.getElementById('delete-order-form-{{ order.id }}').addEventListener('submit', function(event) {
                           event.preventDefault();

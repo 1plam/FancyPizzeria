@@ -75,6 +75,7 @@
                     <h1 class="text-xl font-medium ">Your last submitted order:</h1>
                     <!--Order Item Start-->
                     {% if order %}
+                        <span class="text-xs font-light text-gray-400">Identifier of order: #{{ order.id[:8] }}</span>
                         {% set total_price = 0 %}
                         {% for order_item in order.order_items %}
                             {% set total_price = total_price + order_item.price %}
@@ -82,7 +83,7 @@
                                 <div class="flex items-center">
                                     <div class="flex flex-col ml-3">
                                         <span class="md:text-md font-medium">{{ order_item.name }}</span>
-                                        <span class="text-xs font-light text-gray-400">#{{ order.id }}</span>
+                                        <span class="text-xs font-light text-gray-400">ID #{{ order_item.id }}</span>
                                     </div>
                                 </div>
                                 <div class="flex justify-center items-center">
@@ -97,7 +98,10 @@
                         {% endfor %}
                         <div class="flex justify-between items-center mt-6 pt-6 border-t">
                             <div class="flex justify-center items-end">
-                                <span class="text-xl font-medium text-gray-600 mr-1">Total paid: <span id="total-price">{{ total_price }}</span>$</span>
+                                <span class="text-xl font-light text-gray-900 mr-1">Total paid: <span id="total-price">{{ total_price }}</span>$</span>
+                            </div>
+                            <div class="flex justify-end items-end">
+                                <span class="text-xl font-light text-gray-400 mr-1">{{ order.state }}</span>
                             </div>
                         </div>
                         <script>

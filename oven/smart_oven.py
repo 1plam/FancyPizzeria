@@ -11,7 +11,7 @@ class SmartOven:
     UPLOAD_URL = "http://127.0.0.1:8080/kitchen"
     ORDERS_URL = "http://127.0.0.1:8080/orders"
 
-    def __init__(self, com_port="COM4", button_pin=8):
+    def __init__(self, com_port="/dev/tty.usbserial-2130", button_pin=8):
         self.BUTTON_PIN = button_pin
         self.LED_PINS = [4, 5, 6, 7]
         self.board = CustomPymata4(com_port=com_port)
@@ -32,10 +32,7 @@ class SmartOven:
         response = requests.get(f"{self.ORDERS_URL}/{order_id}")
         if response.status_code == 200:
             order_state = response.json().get('state')
-            logging.info(f'Order with id {order_id} has state {order_state}.')
             return order_state == 'OrderState.SUBMITTED'
-
-        logging.info(f"Order with id {order_id} does not exist in the database.")
         return False
 
     def update_order_state(self, order_id, new_state):
@@ -70,7 +67,6 @@ class SmartOven:
 
             time.sleep(1)
 
-        oven_data["order_number"] = "None"
         oven_data["oven_status"] = "Done"
         requests.post(self.UPLOAD_URL, json=oven_data)
 
